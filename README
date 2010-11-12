@@ -1,0 +1,53 @@
+giix Readme
+===========
+
+http://rodrigocoelho.com.br/giix/
+http://giix.googlecode.com/
+
+giix is gii Extended, a code generator for Yii PHP framework.
+giix is inspired and based on gii-template-collection (gtc), by Herbert Maschke (thyseus).
+
+ACKNOWLEDGEMENTS
+----------------
+
+giix is inspired and uses code from Yii PHP framework and gii-template-collection.
+Many thanks to Qiang Xue, Herbert Maschke and the contributors of these software.
+
+FEATURES
+--------
+
+giix extends Yii's gii by providing:
+- Proper handling of related model attributes, rendering of appropriate form fields based on relation type.
+- More support for HAS_MANY and MANY_MANY relations.
+- Automatic string representation for a model via GxActiveRecord::representingColumn() and GxActiveRecord::__toString().
+- Out-of-the box i18n support by using Yii::t().
+- Appropriate form fields are rendered based on model attribute/table field data type.
+- Generated code is (almost) free of comments.
+
+Some of these features come from gtc.
+
+REQUIREMENTS
+------------
+
+Yii 1.1.4+ is required.
+
+giix is tested under:
+- Yii trunk code, revision 2637
+- Apache 2.2
+- PHP 5.2
+
+giix may run on other setups, but there is no official suppport for them.
+There is no planned official support for Windows/IIS.
+
+INSTALLATION AND UPGRADING
+--------------------------
+
+Please see INSTALL and UPGRADE files for instructions.
+
+USING
+-----
+
+After installing, you will see the giix generators on the gii page.
+The giix generators' names start with "giix".
+Read the gii doumentation on how to use it
+<http://www.yiiframework.com/doc/api/GiiModule>.

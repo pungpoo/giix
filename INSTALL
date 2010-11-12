@@ -9,7 +9,7 @@ downloaded archive into your application's protected/extensions directory.
 	'gii' => array(
 		'class' => 'system.gii.GiiModule',
 		'generatorPaths' => array(
-			'ext.giix-core',
+			'ext.giix-core', // giix generators
 		),
 	),
 ),

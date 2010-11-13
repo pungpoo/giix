@@ -103,11 +103,11 @@ abstract class GxActiveRecord extends CActiveRecord {
 	/**
 	 * Extracts and returns only the primary keys values from each model.
 	 * @param CActiveRecord|array $model a model or an array of models.
-	 * @param boolean $forceString whether pk values on multi-pk tables should
-	 * be compressed into a string. The values on the string will by
+	 * @param boolean $forceString whether pk values on composite pk tables
+	 * should be compressed into a string. The values on the string will by
 	 * separated by {@link $pkSeparator}.
 	 * @return string|array the pk value as a string (for single pk tables) or
-	 * array (for multi pk tables) if one model was specified or
+	 * array (for composite pk tables) if one model was specified or
 	 * an array of strings or arrays if multiple models were specified.
 	 */
 	public static function extractPkValue($model, $forceString = false) {

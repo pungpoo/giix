@@ -21,7 +21,7 @@ class GiixCrudGenerator extends CCodeGenerator {
 
 	/**
 	 * Returns the model names in an array.
-	 * Only non abstract and superclasses of GxActiveRecord models are returned.
+	 * Only non abstract and subclasses of GxActiveRecord models are returned.
 	 * The array is used to build the autocomplete field.
 	 * @return array the names of the models
 	 */

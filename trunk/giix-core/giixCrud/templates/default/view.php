@@ -39,13 +39,13 @@ foreach ($this->tableSchema->columns as $column)
 <?php if ($relation[0] == GxActiveRecord::HAS_MANY || $relation[0] == GxActiveRecord::MANY_MANY): ?>
 <h2><?php echo $this->pluralize($this->class2name($relation[1])); ?></h2>
 <?php echo "<?php\n"; ?>
-	echo CHtml::openTag('ul');
+	echo GxHtml::openTag('ul');
 	foreach($model-><?php echo $relationName; ?> as $relatedModel) {
-		echo CHtml::openTag('li');
+		echo GxHtml::openTag('li');
 		echo GxHtml::link(GxHtml::valueEx($relatedModel), array('<?php echo strtolower($relation[1][0]) . substr($relation[1], 1); ?>/view', 'id' => GxActiveRecord::extractPkValue($relatedModel, true)));
-		echo CHtml::closeTag('li');
+		echo GxHtml::closeTag('li');
 	}
-	echo CHtml::closeTag('ul');
+	echo GxHtml::closeTag('ul');
 <?php echo '?>'; ?>
 <?php endif; ?>
 <?php endforeach; ?>

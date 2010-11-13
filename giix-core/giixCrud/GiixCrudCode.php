@@ -75,7 +75,6 @@ class GiixCrudCode extends CrudCode {
 				|| strtoupper($column->dbType) == 'BOOLEAN') {
 			return "echo \$form->checkBox(\$model, '{$column->name}')";
 		} else if (strtoupper($column->dbType) == 'DATE') {
-			// TODO: v1.2 Provide i18n to CJuiDatePicker.
 			return "\$form->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'model' => \$model,
 			'attribute' => '{$column->name}',
@@ -133,12 +132,10 @@ class GiixCrudCode extends CrudCode {
 		}
 	}
 
-	// TODO: v1.1 generateInputField
 	public function generateInputField($modelClass, $column) {
 		return 'echo ' . parent::generateInputField($modelClass, $column);
 	}
 
-	// TODO: v1.2 Support the formatter to better display the data.
 	/**
 	 * Generates and returns the view source code line
 	 * to create the appropriate attribute configuration for a CDetailView.
@@ -164,7 +161,6 @@ class GiixCrudCode extends CrudCode {
 		}
 	}
 
-	// TODO: v1.2 Support the same data types supported on generateActiveField.
 	/**
 	 * Generates and returns the view source code line
 	 * to create the CGridView column definition.
@@ -199,7 +195,6 @@ class GiixCrudCode extends CrudCode {
 		}
 	}
 
-	// TODO: v1.2 Support the same data types supported on generateActiveField.
 	/**
 	 * Generates and returns the view source code line
 	 * to create the advanced search.

@@ -79,7 +79,6 @@ class GiixCrudCode extends CrudCode {
 			'model' => \$model,
 			'attribute' => '{$column->name}',
 			'value' => \$model->{$column->name},
-			'htmlOptions' => array('size'=>10, 'style'=>'width:80px !important'),
 			'options' => array(
 				'showButtonPanel' => true,
 				'changeYear' => true,

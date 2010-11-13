@@ -21,7 +21,7 @@ class GiixCrudGenerator extends CCodeGenerator {
 
 	/**
 	 * Returns the model names in an array.
-	 * Only non abstract and superclasses of CActiveRecord models are returned.
+	 * Only non abstract and superclasses of GxActiveRecord models are returned.
 	 * The array is used to build the autocomplete field.
 	 * @return array the names of the models
 	 */
@@ -31,7 +31,7 @@ class GiixCrudGenerator extends CCodeGenerator {
 		foreach ($files as $file) {
 			if ($file[0] !== '.' && CFileHelper::getExtension($file) === 'php') {
 				$fileClassName = substr($file, 0, strpos($file, '.'));
-				if (class_exists($fileClassName) && is_subclass_of($fileClassName, 'CActiveRecord')) {
+				if (class_exists($fileClassName) && is_subclass_of($fileClassName, 'GxActiveRecord')) {
 					$fileClass = new ReflectionClass($fileClassName);
 					if (!$fileClass->isAbstract())
 						$models[] = $fileClassName;

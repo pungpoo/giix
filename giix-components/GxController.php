@@ -40,7 +40,7 @@ abstract class GxController extends Controller {
 	 */
 	protected function performAjaxValidation($model, $form) {
 		if (Yii::app()->request->isAjaxRequest && $_POST['ajax'] == $form) {
-			echo CActiveForm::validate($model);
+			echo GxActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}

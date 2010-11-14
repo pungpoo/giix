@@ -24,6 +24,7 @@ giix extends Yii's gii by providing:
 - Automatic string representation for a model via GxActiveRecord::representingColumn() and GxActiveRecord::__toString().
 - Out-of-the box i18n support by using Yii::t().
 - Appropriate form fields are rendered based on model attribute/table field data type.
+- Separated model and basemodel. Basemodel can be regenerated without overwriting your code in the model.
 - Generated code is (almost) free of comments.
 
 Some of these features come from gtc.

@@ -82,12 +82,12 @@ class GiixModelCode extends ModelCode {
 			// Generate the model.
 			$this->files[] = new CCodeFile(
 							Yii::getPathOfAlias($this->modelPath . '.' . $className) . '.php',
-							$this->render($templatePath . '/model.php', $params)
+							$this->render($templatePath . DIRECTORY_SEPARATOR . 'model.php', $params)
 			);
 			// Generate the base model.
 			$this->files[] = new CCodeFile(
 							Yii::getPathOfAlias($this->baseModelPath . '.' . $this->baseModelClass) . '.php',
-							$this->render($templatePath . '/_base/basemodel.php', $params)
+							$this->render($templatePath . DIRECTORY_SEPARATOR . '_base' . DIRECTORY_SEPARATOR . 'basemodel.php', $params)
 			);
 		}
 	}
@@ -101,7 +101,7 @@ class GiixModelCode extends ModelCode {
 	public function requiredTemplates() {
 		return array(
 			'model.php',
-			'_base/basemodel.php',
+			'_base' . DIRECTORY_SEPARATOR . 'basemodel.php',
 		);
 	}
 

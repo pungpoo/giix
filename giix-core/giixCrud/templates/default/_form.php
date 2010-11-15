@@ -11,7 +11,7 @@
 <?php echo '<?php '; ?>
 $form = $this->beginWidget('GxActiveForm', array(
 	'id' => '<?php echo $this->class2id($this->modelClass); ?>-form',
-	'enableAjaxValidation' => '<?php echo $ajax; ?>',
+	'enableAjaxValidation' => <?php echo $ajax; ?>,
 ));
 <?php echo '?>'; ?>
 

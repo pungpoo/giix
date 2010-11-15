@@ -4,6 +4,7 @@ giix Change Log
 Version 1.1, to be released
 ----------------------------
 Enh: All inline styling and formatting is removed from the generated code.
+Bug: GxActiveForm::enableAjaxValidation value was passed as a string instead of as a boolean in _form.php, causing it to ever evaluate to true. This caused a new record to be added in every ajax validation post (There weren't a call to GxController::performAjaxValidation).
 
 Version 1.0, 2010-11-12
 ----------------------------

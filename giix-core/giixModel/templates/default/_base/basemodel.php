@@ -77,7 +77,7 @@ abstract class <?php echo $this->baseModelClass; ?> extends <?php echo $this->ba
 		);
 <?php else: ?>
 		return '<?php echo $representingColumn; ?>';
-<?endif; ?>
+<?php endif; ?>
 	}
 
 	public function rules() {

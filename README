@@ -5,11 +5,13 @@ giix version 1.1
 
 http://www.yiiframework.com/extension/giix/
 http://www.yiiframework.com/forum/index.php?/topic/13154-giix-%E2%80%94-gii-extended/
-http://rodrigocoelho.com.br/giix/
 http://giix.googlecode.com/
+http://rodrigocoelho.com.br/giix/
 
 giix is gii Extended, a code generator for Yii PHP framework.
 giix is inspired and based on gii-template-collection (gtc), by Herbert Maschke (thyseus).
+
+giix is free software and is dual-licensed under the terms of the new BSD License and under the terms of GNU GPL v3. See the LICENSE file.
 
 ACKNOWLEDGEMENTS
 ----------------
@@ -31,6 +33,12 @@ giix extends Yii's gii by providing:
 
 Some of these features come from gtc.
 
+WARNING
+-------
+
+giix is not fully tested now, so please test your application and be careful using it.
+giix is not production ready yet.
+
 REQUIREMENTS
 ------------
 
@@ -42,7 +50,7 @@ giix is tested under:
 - PHP 5.2
 
 giix may run on other setups, but there is no official suppport for them.
-There is no planned official support for Windows/IIS.
+There is no planned official support for other setups, including Windows/IIS.
 
 INSTALLATION AND UPGRADING
 --------------------------

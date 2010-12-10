@@ -1,0 +1,15 @@
+giix Change Log
+===============
+
+Version 1.1.1, 2010-12-10
+----------------------------
+Enh: All inline styling and formatting is removed from the generated code.
+Bug: GxActiveForm::enableAjaxValidation value was passed as a string instead of as a boolean in _form.php, causing it to ever evaluate to true. This caused a new record to be added in every ajax validation post (There weren't a call to GxController::performAjaxValidation).
+Chg: Removed support for enum fields.
+Bug: Now all the output data is HTML encoded.
+New: Added method GxHtml::encodeEx.
+
+Version 1.0, 2010-11-12
+----------------------------
+Initial release, based on gii-template-collection (gtc).
+Updated up to gtc r107 and yii/gii 1.1.3 r2247.

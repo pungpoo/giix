@@ -91,7 +91,7 @@ class GiixCrudCode extends CrudCode {
 			$enum_values = explode(',', substr($column->dbType, 4, strlen($column->dbType) - 1));
 			foreach ($enum_values as $enum_value) {
 				$enum_value = trim($enum_value, "()'");
-				$result .= "\t\t\t'{$data[$enum_value]}' => Yii::t('app', {$enum_value}),\n";
+				$result .= "\t\t\t'{$enum_value}' => Yii::t('app', '{$enum_value}'),\n";
 			}
 			$result .= "))";
 			return $result;

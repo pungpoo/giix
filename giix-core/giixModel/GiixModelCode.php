@@ -126,7 +126,6 @@ class GiixModelCode extends ModelCode {
 		return array_merge(parent::generateRules($table), $rules);
 	}
 
-	// TODO: Please optimize me!
 	/**
 	 * Selects the representing column of the table.
 	 * This field will be the responsible for the string representation of

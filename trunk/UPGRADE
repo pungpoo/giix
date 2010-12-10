@@ -20,3 +20,4 @@ General upgrade intructions
 Upgrading from 1.0
 ---------------------
 All inline styling and formatting is removed from the generated code. Now you need to style your pages with your own css rules.
+Removed support for enum fields. If you need this, you will have to implement it in your code.

@@ -23,7 +23,7 @@ $this->menu=array(
 );
 ?>
 
-<h1><?php echo '<?php'; ?> echo Yii::t('app', 'View'); <?php echo '?>'; ?> <?php echo $this->modelClass . " #<?php echo \$model->{$this->tableSchema->primaryKey}; ?>"; ?></h1>
+<h1><?php echo '<?php'; ?> echo Yii::t('app', 'View'); <?php echo '?>'; ?> <?php echo $this->modelClass . " #<?php echo GxHtml::encode(\$model->{$this->tableSchema->primaryKey}); ?>"; ?></h1>
 
 <?php echo '<?php'; ?> $this->widget('zii.widgets.CDetailView', array(
 	'data' => $model,
@@ -42,7 +42,7 @@ foreach ($this->tableSchema->columns as $column)
 	echo GxHtml::openTag('ul');
 	foreach($model-><?php echo $relationName; ?> as $relatedModel) {
 		echo GxHtml::openTag('li');
-		echo GxHtml::link(GxHtml::valueEx($relatedModel), array('<?php echo strtolower($relation[1][0]) . substr($relation[1], 1); ?>/view', 'id' => GxActiveRecord::extractPkValue($relatedModel, true)));
+		echo GxHtml::link(GxHtml::encode(GxHtml::valueEx($relatedModel)), array('<?php echo strtolower($relation[1][0]) . substr($relation[1], 1); ?>/view', 'id' => GxActiveRecord::extractPkValue($relatedModel, true)));
 		echo GxHtml::closeTag('li');
 	}
 	echo GxHtml::closeTag('ul');

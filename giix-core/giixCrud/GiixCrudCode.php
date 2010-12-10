@@ -85,16 +85,6 @@ class GiixCrudCode extends CrudCode {
 				'dateFormat' => 'yy-mm-dd',
 				),
 			));\n";
-		} else if (substr(strtoupper($column->dbType), 0, 4) == 'ENUM') {
-			$result = "echo \$form->dropDownList(\$model, '{$column->name}', array(\n";
-
-			$enum_values = explode(',', substr($column->dbType, 4, strlen($column->dbType) - 1));
-			foreach ($enum_values as $enum_value) {
-				$enum_value = trim($enum_value, "()'");
-				$result .= "\t\t\t'{$enum_value}' => Yii::t('app', '{$enum_value}'),\n";
-			}
-			$result .= "))";
-			return $result;
 		} else {
 			return 'echo ' . parent::generateActiveField($modelClass, $column);
 		}

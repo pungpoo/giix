@@ -1,0 +1,22 @@
+Upgrading Instructions for giix
+===============================
+
+IMPORTANT
+
+The following upgrading instructions are cumulative. That is,
+if you want to upgrade from version A to version C and there is
+version B between A and C, you need to follow the instructions
+for both versions A and B.
+
+General upgrade intructions
+---------------------------
+- Make a backup.
+- Clean up your assets directory.
+- Clean up your cache directory.
+- Remove the "giix-core" and "giix-components" diretories from your application's
+  extensions directory.
+- Then follow the install instructions for the new release.
+
+Upgrading from 1.0
+---------------------
+All inline styling and formatting is removed from the generated code. Now you need to style your pages with your own css rules.

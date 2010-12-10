@@ -33,11 +33,13 @@ giix extends Yii's gii by providing:
 
 Some of these features come from gtc.
 
-WARNING
--------
+WARNINGS
+--------
 
 giix is not fully tested now, so please test your application and be careful using it.
 giix is not production ready yet.
+
+giix is still in development. Some changes may break backwards compatibility.
 
 REQUIREMENTS
 ------------

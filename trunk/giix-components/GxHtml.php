@@ -92,6 +92,7 @@ class GxHtml extends CHtml {
 	 * to a string or an array of strings with the selected primary keys.
 	 * @param mixed $value the value of the attribute as returned by
 	 * {@link CHtml::resolveValue}.
+	 * @return mixed the select data.
 	 */
 	public static function selectData($value) {
 		// If $value is a model or an array of models, turn it into

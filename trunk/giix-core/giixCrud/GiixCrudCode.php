@@ -116,7 +116,7 @@ class GiixCrudCode extends CrudCode {
 				break;
 			case GxActiveRecord::HAS_MANY:
 			case GxActiveRecord::MANY_MANY:
-				return "echo \$form->checkBoxList(\$model, '{$relationName}', GxHtml::listDataEx({$relationModel}::model()->findAllAttributes(null, true)))";
+				return "echo \$form->checkBoxList(\$model, '{$relationName}', GxHtml::encodeEx(GxHtml::listDataEx({$relationModel}::model()->findAllAttributes(null, true)), false, true))";
 				break;
 		}
 	}

@@ -131,4 +131,36 @@ class GxHtml extends CHtml {
 		return $model;
 	}
 
+	/**
+	 * Encodes special characters into HTML entities.
+	 * This method is based on {@link CHtml::encode}.
+	 * Changes: this method supports encoding strings in arrays and selective encoding of keys and/or values.
+	 * @see {@link CHtml::encode} for more information.
+	 * @param string|array $data data to be encoded
+	 * @param boolean $encodeKeys whether to encode array keys
+	 * @param boolean $encodeValues whether to encode array values
+	 * @param boolean $recursive whether to encode data in nested arrays
+	 * @return string|array the encoded data
+	 */
+	public static function encodeEx($data, $encodeKeys = false, $encodeValues = false, $recursive = true) {
+		if (is_array($data)) {
+			$encodedArray = array();
+			foreach ($data as $key => $value) {
+				$encodedKey = ($encodeKeys && is_string($key)) ? parent::encode($key) : $key;
+				if (is_array($value))
+					if ($recursive)
+						$encodedValue = self::encodeEx($value, $encodeKeys, $encodeValues, $recursive);
+					else
+						$encodedValue = $value;
+				else
+					$encodedValue = ($encodeValues && is_string($value)) ? parent::encode($value) : $value;
+				$encodedArray[$encodedKey] = $encodedValue;
+			}
+			return $encodedArray;
+		} else if (is_string($data))
+			return parent::encode($data);
+		else
+			throw new CHttpException (500, Yii::t('app', 'There was a server error.'));
+	}
+
 }

@@ -15,9 +15,22 @@
  * @author Rodrigo Coelho <giix@rodrigocoelho.com.br>
  * @since 1.0
  */
-abstract class GxController extends Controller {
+abstract class GxController extends CController {
 
+	/**
+	 * @var string The layout for the controller view.
+	 */
 	public $layout = '//layouts/column2';
+	/**
+	 * @var array Context menu items. This property will be assigned to {@link CMenu::items}.
+	 */
+	public $menu = array();
+	/**
+	 * @var array The breadcrumbs of the current page. The value of this property will
+	 * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
+	 * for more details on how to specify this property.
+	 */
+	public $breadcrumbs = array();
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

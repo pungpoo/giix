@@ -57,6 +57,8 @@ class GiixCrudCode extends CrudCode {
 	 * Generates and returns the view source code line
 	 * to create the appropriate active input field based on
 	 * the model attribute field type on the database.
+	 * Contains code from {@link CrudCode::generateActiveField}.
+	 * Changes: all styling is removed.
 	 * Overrides CrudCode::generateActiveField.
 	 * @param string $modelClass The model class name.
 	 * @param CDbColumnSchema $column The column.
@@ -85,9 +87,22 @@ class GiixCrudCode extends CrudCode {
 				'dateFormat' => 'yy-mm-dd',
 				),
 			));\n";
+		} else if (stripos($column->dbType, 'text') !== false) { // Start of CrudCode::generateActiveField code.
+			return "echo \$form->textArea(\$model, '{$column->name}')";
 		} else {
-			return 'echo ' . parent::generateActiveField($modelClass, $column);
-		}
+			$passwordI18n = Yii::t('app', 'password');
+			$passwordI18n = (isset($passwordI18n) && $passwordI18n !== '') ? '|' . $passwordI18n : '';
+			$pattern = '/^(password|pass|passwd|passcode' . $passwordI18n . ')$/i';
+			if (preg_match($pattern, $column->name))
+				$inputField = 'passwordField';
+			else
+				$inputField='textField';
+			
+			if ($column->type !== 'string' || $column->size === null)
+				return "echo \$form->{$inputField}(\$model, '{$column->name}')";
+			else
+				return "echo \$form->{$inputField}(\$model, '{$column->name}', array('maxlength' => {$column->size}))";
+		} // End of CrudCode::generateActiveField code.
 	}
 
 	/**
@@ -199,9 +214,8 @@ class GiixCrudCode extends CrudCode {
 					|| strtoupper($column->dbType) == 'BOOL'
 					|| strtoupper($column->dbType) == 'BOOLEAN')
 				return "echo \$form->dropDownList(\$model, '{$column->name}', array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')), array('prompt' => Yii::t('app', 'All')))";
-			else // Common column.
-				return $this->generateActiveField($this->modelClass, $column); // Will add 'echo' when necessary.
-
+			else // Common column. generateActiveField method will add 'echo' when necessary.
+				return $this->generateActiveField($this->modelClass, $column);
 		} else { // FK.
 			// Find the related model for this column.
 			$relation = $this->findRelation($modelClass, $column);

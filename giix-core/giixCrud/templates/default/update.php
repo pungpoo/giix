@@ -8,7 +8,7 @@
 echo "<?php\n";
 $label = $this->pluralize($this->class2name($this->modelClass));
 echo "\$this->breadcrumbs = array(
-	'$label' => array(Yii::t('app', 'index')),
+	'$label' => array('index'),
 	GxHtml::valueEx(\$model) => array('view', 'id' => GxActiveRecord::extractPkValue(\$model, true)),
 	Yii::t('app', 'Update'),
 );\n";

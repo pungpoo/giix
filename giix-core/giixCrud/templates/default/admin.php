@@ -7,8 +7,8 @@
 <?php
 echo "<?php\n";
 $label=$this->pluralize($this->class2name($this->modelClass));
-echo "\$this->breadcrumbs=array(
-	'$label'=>array(Yii::t('app', 'index')),
+echo "\$this->breadcrumbs = array(
+	'$label' => array('index'),
 	Yii::t('app', 'Manage'),
 );\n";
 ?>

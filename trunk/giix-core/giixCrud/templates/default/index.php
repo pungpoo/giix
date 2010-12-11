@@ -5,9 +5,8 @@
  */
 ?>
 <?php
-$label = $this->pluralize($this->class2name($this->modelClass));
-
 echo "<?php\n";
+$label = $this->pluralize($this->class2name($this->modelClass));
 echo "\$this->breadcrumbs = array(
 	'$label',
 	Yii::t('app', 'Index'),

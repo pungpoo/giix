@@ -23,12 +23,16 @@ FEATURES
 --------
 
 giix extends Yii's gii by providing:
-- Proper handling of related model attributes, rendering of appropriate form fields based on relation type.
+- Proper handling of related model attributes, rendering appropriate form fields based on relation type.
 - More support for HAS_MANY and MANY_MANY relations.
 - Automatic string representation for a model via GxActiveRecord::representingColumn() and GxActiveRecord::__toString().
 - Out-of-the box i18n support by using Yii::t().
 - Appropriate form fields are rendered based on model attribute/table field data type.
 - Separated model and basemodel. Basemodel can be regenerated without overwriting your code in the model.
+- Smart methods can query your database for just the needed data (usually the primary key and the field with the string representantion), avoiding manual setup or a "select *".
+- Extensive use of default method parameters. Appropriate data is found automatically.
+- Some (incipient) support for tables with composite primary keys.
+- Generated code is completely free from styling and formatting. Your CSS controls the presentation.
 - Generated code is (almost) free of comments.
 
 Some of these features come from gtc.
@@ -47,7 +51,7 @@ REQUIREMENTS
 Yii 1.1.4+ is required.
 
 giix is tested under:
-- Yii trunk code, revision 2637
+- Yii trunk code, revision 2738
 - Apache 2.2
 - PHP 5.2
 - MySQL 5.0

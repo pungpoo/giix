@@ -37,13 +37,12 @@ $('.search-form form').submit(function(){
 <h1><?php echo '<?php'; ?> echo Yii::t('app', 'Manage'); ?> <?php echo $this->pluralize($this->class2name($this->modelClass)); ?></h1>
 
 <p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&gt; or =) at the beginning of each of your search values to specify how the comparison should be done.
 </p>
 
 <?php echo "<?php echo GxHtml::link(Yii::t('app', 'Advanced Search'), '#', array('class' => 'search-button')); ?>"; ?>
 
-<div class="search-form" style="display:none">
+<div class="search-form">
 <?php echo "<?php \$this->renderPartial('_search', array(
 	'model' => \$model,
 )); ?>\n"; ?>

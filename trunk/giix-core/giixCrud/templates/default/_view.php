@@ -6,7 +6,7 @@
 ?>
 <div class="view">
 
-	<b><?php echo '<?php'; ?> echo GxHtml::encode($data->getAttributeLabel('<?php echo $this->tableSchema->primaryKey; ?>')); <?php echo '?>'; ?>:</b>
+	<?php echo '<?php'; ?> echo GxHtml::encode($data->getAttributeLabel('<?php echo $this->tableSchema->primaryKey; ?>')); <?php echo '?>'; ?>:
 	<?php echo '<?php'; ?> echo GxHtml::link(GxHtml::encode($data-><?php echo $this->tableSchema->primaryKey; ?>), array('view', 'id' => $data-><?php echo $this->tableSchema->primaryKey; ?>)); <?php echo "?>\n"; ?>
 	<br />
 
@@ -18,7 +18,7 @@ foreach ($this->tableSchema->columns as $column):
 	if (++$count == 7)
 		echo "\t<?php /*\n";
 ?>
-	<b><?php echo '<?php'; ?> echo GxHtml::encode($data->getAttributeLabel('<?php echo $column->name; ?>')); <?php echo '?>'; ?>:</b>
+	<?php echo '<?php'; ?> echo GxHtml::encode($data->getAttributeLabel('<?php echo $column->name; ?>')); <?php echo '?>'; ?>:
 <?php if (!$column->isForeignKey): ?>
 	<?php echo '<?php'; ?> echo GxHtml::encode($data-><?php echo $column->name; ?>); <?php echo "?>\n"; ?>
 <?php else: ?>

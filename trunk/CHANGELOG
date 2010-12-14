@@ -5,6 +5,7 @@ Version 1.2, to be released
 ----------------------------
 Enh: More inline styling and formatting is removed from the generated code.
 Enh: Now the breadcrumb will contain the string representation of the model instance instead of the primary key value, when appropriate.
+Enh: Now the page heading will contain the string representation of the model instance instead of the primary key value, when appropriate.
 Bug: Fixed a bug were the action name were translated in the breadcrumb link.
 Chg: Now GxController extends directly from CController. Class Controller is no longer necessary.
 Enh: I18n support added to some messages.

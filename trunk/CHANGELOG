@@ -1,7 +1,7 @@
 giix Change Log
 ===============
 
-Version 1.2, to be released
+Version 1.2, 2010-12-14
 ----------------------------
 Enh: More inline styling and formatting is removed from the generated code.
 Enh: Now the breadcrumb will contain the string representation of the model instance instead of the primary key value, when appropriate.

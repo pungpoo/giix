@@ -22,7 +22,7 @@ $this->menu=array(
 );
 ?>
 
-<h1><?php echo '<?php'; ?> echo Yii::t('app', 'View'); <?php echo '?>'; ?> <?php echo $this->modelClass . " #<?php echo GxHtml::encode(\$model->{$this->tableSchema->primaryKey}); ?>"; ?></h1>
+<h1><?php echo '<?php'; ?> echo Yii::t('app', 'View'); <?php echo '?>'; ?> <?php echo $this->modelClass . " #<?php echo GxHtml::encode(GxHtml::valueEx(\$model)); ?>"; ?></h1>
 
 <?php echo '<?php'; ?> $this->widget('zii.widgets.CDetailView', array(
 	'data' => $model,

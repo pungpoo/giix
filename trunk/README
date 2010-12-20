@@ -34,6 +34,7 @@ giix extends Yii's gii by providing:
 - Some (incipient) support for tables with composite primary keys.
 - Generated code is completely free from styling and formatting. Your CSS controls the presentation.
 - Generated code is (almost) free of comments.
+- Well documented and commented source code. You can understand and modify anything you want.
 
 Some of these features come from gtc.
 

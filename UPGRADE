@@ -19,7 +19,8 @@ General upgrade intructions
 
 Upgrading from 1.2
 ---------------------
-No modification required.
+giix now has native support for saving MANY_MANY relations with the new method GxActiveRecord::saveWithRelated. You may remove any related extensions if you will use giix's native support.
+If you want to use the new GxActiveRecord::saveWithRelated method, you must first generate the pivot model for the cross-reference table of the relationship. See README file for details.
 
 Upgrading from 1.1.1
 ---------------------

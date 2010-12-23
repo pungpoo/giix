@@ -72,3 +72,10 @@ After installing, you will see the giix generators on the gii page.
 The giix generators' names start with "giix".
 Read the gii doumentation on how to use it
 <http://www.yiiframework.com/doc/api/GiiModule>.
+
+If you want to use the GxActiveRecord::saveWithRelated method, you must first generate
+the pivot model for the cross-reference table of the relationship.
+The pivot model class is the active record between two other active records that have
+a MANY_MANY relationship.
+If you have already generated models for every table in your schema, you are ready to
+use the method to save your MANY_MANY relations.

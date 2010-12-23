@@ -149,9 +149,10 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @return boolean Whether the saving succeeds.
 	 */
 	public function saveWithRelated($relatedData, $withTransaction = true, $batch = true, $runValidation = true, $attributes = null) {
-		if (empty($relatedData))
+		if (empty($relatedData)) {
+			// There is no related data. We simply save the main model.
 			return parent::save($runValidation, $attributes);
-		else {
+		} else {
 			// Save each related data.
 			foreach ($relatedData as $relationName => $relationData) {
 				// Get the current related models of this relation and map the current related primary keys.
@@ -177,6 +178,9 @@ abstract class GxActiveRecord extends CActiveRecord {
 					}
 				} else // If the new data is empty, everything must be deleted.
 					$deleteMap = $currentMap;
+				// If nothing changed, we simply save the main model.
+				if (empty($deleteMap) && empty($insertMap))
+					return parent::save($runValidation, $attributes);
 				// Now act inserting and deleting the related data: first prepare the data.
 				// Get the foreign key names for the models.
 				$activeRelation = $this->getActiveRelation($relationName);

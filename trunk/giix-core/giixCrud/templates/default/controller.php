@@ -29,8 +29,15 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 
 		if (isset($_POST['<?php echo $this->modelClass; ?>'])) {
 			$model->attributes = $_POST['<?php echo $this->modelClass; ?>'];
+<?php if ($this->hasManyManyRelation($this->modelClass)): ?>
+			$relatedData = <?php echo $this->generateGetPostRelatedData($this->modelClass, 4); ?>;
+<?php endif; ?>
 
+<?php if ($this->hasManyManyRelation($this->modelClass)): ?>
+			if ($model->saveWithRelated($relatedData)) {
+<?php else: ?>
 			if ($model->save()) {
+<?php endif; ?>
 				if (Yii::app()->request->isAjaxRequest)
 					Yii::app()->end();
 				else
@@ -50,8 +57,15 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 
 		if (isset($_POST['<?php echo $this->modelClass; ?>'])) {
 			$model->attributes = $_POST['<?php echo $this->modelClass; ?>'];
+<?php if ($this->hasManyManyRelation($this->modelClass)): ?>
+			$relatedData = <?php echo $this->generateGetPostRelatedData($this->modelClass, 4); ?>;
+<?php endif; ?>
 
+<?php if ($this->hasManyManyRelation($this->modelClass)): ?>
+			if ($model->saveWithRelated($relatedData)) {
+<?php else: ?>
 			if ($model->save()) {
+<?php endif; ?>
 				$this->redirect(array('view', 'id' => $model-><?php echo $this->tableSchema->primaryKey; ?>));
 			}
 		}

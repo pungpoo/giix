@@ -97,7 +97,7 @@ class GiixCrudCode extends CrudCode {
 				$inputField = 'passwordField';
 			else
 				$inputField='textField';
-			
+
 			if ($column->type !== 'string' || $column->size === null)
 				return "echo \$form->{$inputField}(\$model, '{$column->name}')";
 			else
@@ -222,6 +222,40 @@ class GiixCrudCode extends CrudCode {
 			$relatedModelClass = $relation[3];
 			return "echo \$form->dropDownList(\$model, '{$column->name}', GxHtml::listDataEx({$relatedModelClass}::model()->findAllAttributes(null, true)), array('prompt' => Yii::t('app', 'All')))";
 		}
+	}
+
+	/**
+	 * Generates and returns the array (as a PHP source code string)
+	 * to collect the MANY_MANY related data from the POST.
+	 * @param string $modelClass The model class name.
+	 * @return string The source code to collect the MANY_MANY related
+	 * data from the POST.
+	 */
+	public function generateGetPostRelatedData($modelClass, $indent = 1) {
+		$result = array();
+		$relations = $this->getRelations($modelClass);
+		foreach ($relations as $relationData) {
+			$relationName = $relationData[0];
+			$relationType = $relationData[1];
+			if ($relationType == GxActiveRecord::MANY_MANY)
+				$result[$relationData[0]] = "php:\$_POST['{$modelClass}']['{$relationName}'] === '' ? null : \$_POST['{$modelClass}']['{$relationName}']";
+		}
+		return GxCoreHelper::ArrayToPhpSource($result, $indent);
+	}
+
+	/**
+	 * Checks whether this AR has a MANY_MANY relation.
+	 * @param string $modelClass The model class name.
+	 * @return boolean Whether this AR has a MANY_MANY relation.
+	 */
+	public function hasManyManyRelation($modelClass) {
+		$relations = $this->getRelations($modelClass);
+		foreach ($relations as $relationData) {
+			if ($relationData[1] == GxActiveRecord::MANY_MANY) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

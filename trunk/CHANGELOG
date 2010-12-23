@@ -7,6 +7,7 @@ New: Added native support for saving MANY_MANY relations with the new method GxA
 New: Added method GxActiveRecord::pivotModels.
 New: Added automatic detection of related data for HAS_MANY and MANY_MANY relations in the POST with the new method GxController::getRelatedData.
 New: The generated model will have the pivot class names in its pivotModels method.
+New: The generated controller now have support for saving MANY_MANY relations automatically.
 
 Version 1.2, 2010-12-14
 ----------------------------

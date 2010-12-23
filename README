@@ -25,6 +25,7 @@ FEATURES
 giix extends Yii's gii by providing:
 - Proper handling of related model attributes, rendering appropriate form fields based on relation type.
 - More support for HAS_MANY and MANY_MANY relations.
+- Native support for saving MANY_MANY relations with the new method GxActiveRecord::saveWithRelated.
 - Automatic string representation for a model via GxActiveRecord::representingColumn() and GxActiveRecord::__toString().
 - Out-of-the box i18n support by using Yii::t().
 - Appropriate form fields are rendered based on model attribute/table field data type.

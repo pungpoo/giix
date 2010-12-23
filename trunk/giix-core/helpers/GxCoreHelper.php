@@ -35,7 +35,7 @@ class GxCoreHelper {
 	 * @return string the PHP source code representation of the array.
 	 */
 	public static function ArrayToPhpSource($array, $indent = 1, $empty = 'array()') {
-		if (count($array) == 0)
+		if (empty($array))
 			return $empty;
 
 		// Start of array.

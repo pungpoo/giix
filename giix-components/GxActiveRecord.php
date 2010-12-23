@@ -140,8 +140,10 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @param boolean $withTransaction Whether to use a transaction.
 	 * @param boolean $batch Whether to try to do the deletes and inserts in batch.
 	 * While batches may be faster, using active record instances provides better control, validation, event support etc.
+	 * Batch is only supported for deletes.
 	 * @param boolean $runValidation Whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database. This applies to all (including related) models.
+	 * This does not apply when in batch mode.
 	 * @param array $attributes List of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved. This applies only to the main model.
 	 * @return boolean Whether the saving succeeds.
@@ -240,7 +242,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 					foreach ($insertMap as $value) {
 						$pivotModel = new $pivotClassName();
 						$pivotModel->attributes = $value;
-						if (!$pivotModel->save()) {
+						if (!$pivotModel->save($runValidation)) {
 							if ($transacted)
 								$transaction->rollback();
 							return false;

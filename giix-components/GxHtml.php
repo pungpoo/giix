@@ -98,7 +98,7 @@ class GxHtml extends CHtml {
 		// If $value is a model or an array of models, turn it into
 		// a string or an array of strings with the pk values.
 		if ((is_object($value) && is_subclass_of($value, 'GxActiveRecord')) ||
-				(is_array($value) && count($value) > 0 && is_object($value[0]) && is_subclass_of($value[0], 'GxActiveRecord')))
+				(is_array($value) && !empty($value) && is_object($value[0]) && is_subclass_of($value[0], 'GxActiveRecord')))
 			return GxActiveRecord::extractPkValue($value, true);
 		else
 			return $value;

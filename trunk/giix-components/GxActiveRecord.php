@@ -137,18 +137,34 @@ abstract class GxActiveRecord extends CActiveRecord {
 	/**
 	 * Saves the current record and its relations.
 	 * @param array $relatedData The relation data in the format returned by {@link GxController::getRelatedData}.
-	 * @param boolean $withTransaction Whether to use a transaction.
-	 * @param boolean $batch Whether to try to do the deletes and inserts in batch.
-	 * While batches may be faster, using active record instances provides better control, validation, event support etc.
-	 * Batch is only supported for deletes.
 	 * @param boolean $runValidation Whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database. This applies to all (including related) models.
-	 * This does not apply when in batch mode.
+	 * This does not apply when in batch mode. This does not apply for deletes. If you want to validate deletes, disable
+	 * batch mode and use the {@link CActiveRecord::onBeforeDelete} event.
 	 * @param array $attributes List of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved. This applies only to the main model.
+	 * @param array $options Additional options. Valid options are:
+	 * <ul>
+	 * <li>'withTransaction', boolean: Whether to use a transaction.
+	 * Note: if there are no changes in the relations, no transaction will be used.</li>
+	 * <li>'batch', boolean: Whether to try to do the deletes and inserts in batch.
+	 * While batches may be faster, using active record instances provides better control, validation, event support etc.
+	 * Batch is only supported for deletes.</li>
+	 * </ul>
 	 * @return boolean Whether the saving succeeds.
 	 */
-	public function saveWithRelated($relatedData, $withTransaction = true, $batch = true, $runValidation = true, $attributes = null) {
+	public function saveWithRelated($relatedData, $runValidation = true, $attributes = null, $options = array()) {
+		// The default options.
+		$defaultOptions = array(
+			'withTransaction' => true,
+			'batch' => true,
+		);
+		// Merge the specified options with the default options.
+		$options = array_merge($defaultOptions, $options);
+		// Pass the options to variables.
+		$withTransaction = $options['withTransaction'];
+		$batch = $options['batch'];
+
 		if (empty($relatedData)) {
 			// There is no related data. We simply save the main model.
 			return parent::save($runValidation, $attributes);

@@ -97,6 +97,14 @@ abstract class <?php echo $this->baseModelClass; ?> extends <?php echo $this->ba
 		);
 	}
 
+	public function pivotModels() {
+		return array(
+<?php foreach($pivotModels as $relationName=>$pivotModel): ?>
+			<?php echo "'{$relationName}' => '{$pivotModel}',\n"; ?>
+<?php endforeach; ?>
+		);
+	}
+
 	public function attributeLabels() {
 		return array(
 <?php foreach($labels as $name=>$label): ?>

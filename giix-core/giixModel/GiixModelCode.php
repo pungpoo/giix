@@ -35,8 +35,9 @@ class GiixModelCode extends ModelCode {
 	/**
 	 * Prepares the code files to be generated.
 	 * Overrides and based on ModelCode::prepare.
-	 * Changes: generates the base model and
-	 * provides the representing column for the table.
+	 * Changes: generates the base model,
+	 * provides the representing column for the table and
+	 * provides the pivot class names for MANY_MANY relations.
 	 */
 	public function prepare() {
 		$this->files = array();
@@ -67,6 +68,18 @@ class GiixModelCode extends ModelCode {
 		foreach ($tables as $table) {
 			$tableName = $this->removePrefix($table->name);
 			$className = $this->generateClassName($table->name);
+
+			// Generate the pivot model data.
+			$pivotModels = array();
+			if (isset($this->relations[$className])) {
+				foreach ($this->relations[$className] as $relationName => $relationData) {
+					if (preg_match('/^array\(self::MANY_MANY,.*?,\s*\'(.+?)\(/', $relationData, $matches)) {
+						$pivotTableName = $matches[1];
+						$pivotModels[$relationName] = $this->generateClassName($pivotTableName);
+					}
+				}
+			}
+
 			$params = array(
 				'tableName' => $schema === '' ? $tableName : $schema . '.' . $tableName,
 				'modelClass' => $className,
@@ -75,6 +88,7 @@ class GiixModelCode extends ModelCode {
 				'rules' => $this->generateRules($table),
 				'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
 				'representingColumn' => $this->getRepresentingColumn($table), // The representing column for the table.
+				'pivotModels' => $pivotModels, // The pivot models.
 			);
 			// Setup base model information.
 			$this->baseModelPath = $this->modelPath . '._base';

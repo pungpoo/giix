@@ -176,7 +176,7 @@ class GiixModelCode extends ModelCode {
 				return (string) $pk;
 		}
 		// Then the first column.
-		return $columns[0]->name;
+		return reset($columns)->name;
 	}
 
 }

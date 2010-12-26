@@ -181,7 +181,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 				$newMap = $relationData;
 				$deleteMap = array();
 				$insertMap = array();
-				if (!is_null($newMap)) {
+				if ($newMap !== null) {
 					// Identify the relations to be deleted.
 					foreach ($currentMap as $currentItem) {
 						if (!in_array($currentItem, $newMap))
@@ -224,7 +224,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 					$pkValue = array_merge(array($relatedFkName => $pkValue), array($thisFkName => $thisPkValue));
 				unset($pkValue); // Clear reference;
 				// Start the transaction if required.
-				if ($withTransaction && is_null($this->dbConnection->currentTransaction)) {
+				if ($withTransaction && ($this->dbConnection->currentTransaction === null)) {
 					$transacted = true;
 					$transaction = $this->dbConnection->beginTransaction();
 				} else

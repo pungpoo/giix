@@ -118,7 +118,7 @@ class GxHtml extends CHtml {
 	 */
 	public static function valueEx($model, $attribute = null, $defaultValue = null) {
 		if ($attribute === null) {
-			if (!is_null($model) && is_object($model) && is_subclass_of($model, 'GxActiveRecord'))
+			if (($model !== null) && is_object($model) && is_subclass_of($model, 'GxActiveRecord'))
 				return $model->__toString();
 			else
 				return $defaultValue;

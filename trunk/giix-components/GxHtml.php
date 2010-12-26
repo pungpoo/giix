@@ -117,10 +117,14 @@ class GxHtml extends CHtml {
 	 * @return mixed the attribute value
 	 */
 	public static function valueEx($model, $attribute = null, $defaultValue = null) {
-		if ($attribute === null)
-			return $model->__toString(); // It is assumed that $model is an instance of GxActiveRecord.
+		if ($attribute === null) {
+			if (!is_null($model) && is_object($model) && is_subclass_of($model, 'GxActiveRecord'))
+				return $model->__toString();
+			else
+				return $defaultValue;
+		}
 
-			foreach (explode('.', $attribute) as $name) {
+		foreach (explode('.', $attribute) as $name) {
 			if (is_object($model))
 				$model = $model->$name;
 			else if (is_array($model) && isset($model[$name]))
@@ -160,7 +164,7 @@ class GxHtml extends CHtml {
 		} else if (is_string($data))
 			return parent::encode($data);
 		else
-			throw new CHttpException (500, Yii::t('app', 'There was a server error.'));
+			throw new CHttpException(500, Yii::t('app', 'There was a server error.'));
 	}
 
 }

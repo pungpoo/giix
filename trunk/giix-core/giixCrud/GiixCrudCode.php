@@ -160,7 +160,7 @@ class GiixCrudCode extends CrudCode {
 			return "array(
 			'label' => '{$relatedModelClass}',
 			'type' => 'raw',
-			'value' => GxHtml::link(GxHtml::encode(GxHtml::valueEx(\$model->{$relationName})), array('{$relatedControllerName}/view', 'id' => GxActiveRecord::extractPkValue(\$model->{$relationName}, true))),
+			'value' => \$model->{$relationName} !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx(\$model->{$relationName})), array('{$relatedControllerName}/view', 'id' => GxActiveRecord::extractPkValue(\$model->{$relationName}, true))) : null,
 			)";
 		}
 	}

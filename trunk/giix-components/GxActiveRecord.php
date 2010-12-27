@@ -120,6 +120,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * an array of strings or arrays if multiple models were specified.
 	 */
 	public static function extractPkValue($model, $forceString = false) {
+		if ($model === null)
+			return null;
 		if (!is_array($model)) {
 			$pk = $model->primaryKey;
 			if ($forceString && is_array($pk))

@@ -59,10 +59,10 @@ abstract class GxController extends CController {
 	}
 
 	/**
-	 * Finds the related primary keys specified in the form post.
+	 * Finds the related primary keys specified in the form POST.
 	 * Only for HAS_MANY and MANY_MANY relations.
 	 * @param array $form The post data.
-	 * @param array $relations A list of model relations.
+	 * @param array $relations A list of model relations in the format returned by {@link CActiveRecord::relations}.
 	 * @return array An array where the keys are the relation names (string) and the values arrays with the related model primary keys (int|string) or composite primary keys (array with pk name (string) => pk value (int|string)).
 	 * Example of returned data:
 	 * array(
@@ -70,6 +70,7 @@ abstract class GxController extends CController {
 	 *   'tags' => array(array('id1' => 3, 'id2' => 7), array('id1' => 2, 'id2' => 0)) // composite pks
 	 * )
 	 * An empty array is returned in case there is no related pk data from the post.
+	 * This data comes directly from the form POST data.
 	 */
 	protected function getRelatedData($form, $relations) {
 		$relatedPk = array();

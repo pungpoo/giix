@@ -1,7 +1,7 @@
 giix Change Log
 ===============
 
-Version 1.4, to be released
+Version 1.4, 2010-12-30
 ----------------------------
 Bug: Saving related MANY_MANY relations could delete or insert wrong data since the check on current relations was not necessarily made against the database.
 

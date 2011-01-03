@@ -18,6 +18,7 @@ $('#{$class}_model').bind('keyup change', function(){
 <h1>giix Crud Generator</h1>
 
 <p>This generator generates a controller and views that implement CRUD operations for the specified data model. </p>
+<div id="vote" style="text-align: center; padding: 5px; margin-bottom: 1.5em; background-color: #9f9; border: 1px solid #393;"><p style="margin: 0; font-style: italic; letter-spacing: 0.025em;">Did giix help you? <a href="http://www.yiiframework.com/extension/giix/" style="font-weight: bold; font-style: normal;">Upvote it</a>!</p></div>
 
 <?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
 

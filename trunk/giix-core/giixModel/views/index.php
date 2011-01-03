@@ -35,6 +35,7 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 <h1>giix Model Generator</h1>
 
 <p>This generator generates a model class for the specified database table.</p>
+<div id="vote" style="text-align: center; padding: 5px; margin-bottom: 1.5em; background-color: #9f9; border: 1px solid #393;"><p style="margin: 0; font-style: italic; letter-spacing: 0.025em;">Did giix help you? <a href="http://www.yiiframework.com/extension/giix/" style="font-weight: bold; font-style: normal;">Upvote it</a>!</p></div>
 
 <?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
 

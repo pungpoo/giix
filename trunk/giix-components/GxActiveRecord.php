@@ -5,7 +5,7 @@
  *
  * @author Rodrigo Coelho <giix@rodrigocoelho.com.br>
  * @link http://rodrigocoelho.com.br/giix/
- * @copyright Copyright &copy; 2010 Rodrigo Coelho
+ * @copyright Copyright &copy; 2010-2011 Rodrigo Coelho
  * @license http://rodrigocoelho.com.br/giix/license/ New BSD License
  */
 
@@ -141,7 +141,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @param array $relatedData The relation data in the format returned by {@link GxController::getRelatedData}.
 	 * @param boolean $runValidation Whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database. This applies to all (including related) models.
-	 * This does not apply when in batch mode. This does not apply for deletes. If you want to validate deletes, disable
+	 * This does not apply for related models when in batch mode. This does not apply for deletes. If you want to validate deletes, disable
 	 * batch mode and use the {@link CActiveRecord::onBeforeDelete} event.
 	 * @param array $attributes List of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved. This applies only to the main model.

@@ -5,7 +5,7 @@
  *
  * @author Rodrigo Coelho <giix@rodrigocoelho.com.br>
  * @link http://rodrigocoelho.com.br/giix/
- * @copyright Copyright &copy; 2010 Rodrigo Coelho
+ * @copyright Copyright &copy; 2010-2011 Rodrigo Coelho
  * @license http://rodrigocoelho.com.br/giix/license/ New BSD License
  */
 Yii::import('system.gii.generators.model.ModelCode');

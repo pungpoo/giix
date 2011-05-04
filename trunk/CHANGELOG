@@ -4,6 +4,7 @@ giix Change Log
 Version 1.5, to be released
 ----------------------------
 Chg: GxController extends again from Controller (reverted from version 1.2).
+Enh: Now GxController::performAjaxValidation supports multiple models.
 
 Version 1.4, 2010-12-30
 ----------------------------

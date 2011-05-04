@@ -137,7 +137,10 @@ abstract class GxActiveRecord extends CActiveRecord {
 	}
 
 	/**
-	 * Saves the current record and its relations.
+	 * Saves the current record and its MANY_MANY relations.
+	 * This method will save the active record and update
+	 * the necessary pivot tables for the MANY_MANY relations.
+	 * This method won't save data on other active record models.
 	 * @param array $relatedData The relation data in the format returned by {@link GxController::getRelatedData}.
 	 * @param boolean $runValidation Whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database. This applies to all (including related) models.
@@ -154,97 +157,97 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Batch is only supported for deletes.</li>
 	 * </ul>
 	 * @return boolean Whether the saving succeeds.
+	 * @see {@link pivotModels}.
 	 */
 	public function saveWithRelated($relatedData, $runValidation = true, $attributes = null, $options = array()) {
-		// The default options.
-		$defaultOptions = array(
-			'withTransaction' => true,
-			'batch' => true,
-		);
 		// Merge the specified options with the default options.
-		$options = array_merge($defaultOptions, $options);
-		// Pass the options to variables.
-		$withTransaction = $options['withTransaction'];
-		$batch = $options['batch'];
+		$options = array_merge(
+						array(
+							'withTransaction' => true,
+							'batch' => true,
+						)
+						,
+						$options);
 
-		if (empty($relatedData)) {
-			// There is no related data. We simply save the main model.
+		// If there is no related data, we simply save the main model and return.
+		if (empty($relatedData))
 			return parent::save($runValidation, $attributes);
-		}
 
-		// Save each related data.
-		foreach ($relatedData as $relationName => $relationData) {
-			// The pivot model class name.
-			$pivotClassNames = $this->pivotModels();
-			$pivotClassName = $pivotClassNames[$relationName];
-			$pivotModelStatic = GxActiveRecord::model($pivotClassName);
-			// Get the foreign key names for the models.
-			$activeRelation = $this->getActiveRelation($relationName);
-			$relatedClassName = $activeRelation->className;
-			if (preg_match('/(.+)\((.+),\s*(.+)\)/', $activeRelation->foreignKey, $matches)) {
-				// By convention, the first fk is for this model, the second is for the related model.
-				$thisFkName = $matches[2];
-				$relatedFkName = $matches[3];
-			}
-			// Get the primary key value of the main model.
-			$thisPkValue = $this->primaryKey;
-			if (is_array($thisPkValue))
-				throw new Exception(Yii::t('giix', 'Composite primary keys are not supported.'), 500);
-			// Get the current related models of this relation and map the current related primary keys.
-			$currentRelation = $pivotModelStatic->findAll(new CDbCriteria(array(
-								'select' => $relatedFkName,
-								'condition' => "$thisFkName = :thisfkvalue",
-								'params' => array(':thisfkvalue' => $thisPkValue),
-							)));
-			$currentMap = array();
-			foreach ($currentRelation as $currentRelModel) {
-				$currentMap[] = $currentRelModel->$relatedFkName;
-			}
-			// Compare the current map to the new data and identify what is to be kept, deleted or inserted.
-			$newMap = $relationData;
-			$deleteMap = array();
-			$insertMap = array();
-			if ($newMap !== null) {
-				// Identify the relations to be deleted.
-				foreach ($currentMap as $currentItem) {
-					if (!in_array($currentItem, $newMap))
-						$deleteMap[] = $currentItem;
-				}
-				// Identify the relations to be inserted.
-				foreach ($newMap as $newItem) {
-					if (!in_array($newItem, $currentMap))
-						$insertMap[] = $newItem;
-				}
-			} else // If the new data is empty, everything must be deleted.
-				$deleteMap = $currentMap;
-			// If nothing changed, we simply save the main model.
-			if (empty($deleteMap) && empty($insertMap))
-				return parent::save($runValidation, $attributes);
-			// Now act inserting and deleting the related data: first prepare the data.
-			// Inject the foreign key names of both models and the primary key value of the main model in the maps.
-			foreach ($deleteMap as &$pkValue)
-				$pkValue = array_merge(array($relatedFkName => $pkValue), array($thisFkName => $thisPkValue));
-			unset($pkValue); // Clear reference;
-			foreach ($insertMap as &$pkValue)
-				$pkValue = array_merge(array($relatedFkName => $pkValue), array($thisFkName => $thisPkValue));
-			unset($pkValue); // Clear reference;
+		try {
 			// Start the transaction if required.
-			if ($withTransaction && ($this->dbConnection->currentTransaction === null)) {
+			if ($options['withTransaction'] && ($this->dbConnection->currentTransaction === null)) {
 				$transacted = true;
 				$transaction = $this->dbConnection->beginTransaction();
 			} else
 				$transacted = false;
-			try {
-				// Save the main model.
-				if (!parent::save($runValidation, $attributes)) {
-					if ($transacted)
-						$transaction->rollback();
-					return false;
+
+			// Save the main model.
+			if (!$this->save($runValidation, $attributes)) {
+				if ($transacted)
+					$transaction->rollback();
+				return false;
+			}
+
+			// Save each related data.
+			foreach ($relatedData as $relationName => $relationData) {
+				// The pivot model class name.
+				$pivotClassNames = $this->pivotModels();
+				$pivotClassName = $pivotClassNames[$relationName];
+				$pivotModelStatic = GxActiveRecord::model($pivotClassName);
+				// Get the foreign key names for the models.
+				$activeRelation = $this->getActiveRelation($relationName);
+				$relatedClassName = $activeRelation->className;
+				if (preg_match('/(.+)\((.+),\s*(.+)\)/', $activeRelation->foreignKey, $matches)) {
+					// By convention, the first fk is for this model, the second is for the related model.
+					$thisFkName = $matches[2];
+					$relatedFkName = $matches[3];
 				}
+				// Get the primary key value of the main model.
+				$thisPkValue = $this->primaryKey;
+				if (is_array($thisPkValue))
+					throw new Exception(Yii::t('giix', 'Composite primary keys are not supported.'), 500);
+				// Get the current related models of this relation and map the current related primary keys.
+				$currentRelation = $pivotModelStatic->findAll(new CDbCriteria(array(
+									'select' => $relatedFkName,
+									'condition' => "$thisFkName = :thisfkvalue",
+									'params' => array(':thisfkvalue' => $thisPkValue),
+								)));
+				$currentMap = array();
+				foreach ($currentRelation as $currentRelModel) {
+					$currentMap[] = $currentRelModel->$relatedFkName;
+				}
+				// Compare the current map to the new data and identify what is to be kept, deleted or inserted.
+				$newMap = $relationData;
+				$deleteMap = array();
+				$insertMap = array();
+				if ($newMap !== null) {
+					// Identify the relations to be deleted.
+					foreach ($currentMap as $currentItem) {
+						if (!in_array($currentItem, $newMap))
+							$deleteMap[] = $currentItem;
+					}
+					// Identify the relations to be inserted.
+					foreach ($newMap as $newItem) {
+						if (!in_array($newItem, $currentMap))
+							$insertMap[] = $newItem;
+					}
+				} else // If the new data is empty, everything must be deleted.
+					$deleteMap = $currentMap;
+				// If nothing changed, we simply continue the loop.
+				if (empty($deleteMap) && empty($insertMap))
+					continue;
+				// Now act inserting and deleting the related data: first prepare the data.
+				// Inject the foreign key names of both models and the primary key value of the main model in the maps.
+				foreach ($deleteMap as &$deleteMapPkValue)
+					$deleteMapPkValue = array_merge(array($relatedFkName => $deleteMapPkValue), array($thisFkName => $thisPkValue));
+				unset($deleteMapPkValue); // Clear reference;
+				foreach ($insertMap as &$insertMapPkValue)
+					$insertMapPkValue = array_merge(array($relatedFkName => $insertMapPkValue), array($thisFkName => $thisPkValue));
+				unset($insertMapPkValue); // Clear reference;
 				// Now act inserting and deleting the related data: then execute the changes.
 				// Delete the data.
 				if (!empty($deleteMap)) {
-					if ($batch) {
+					if ($options['batch']) {
 						// Delete in batch mode.
 						if ($pivotModelStatic->deleteByPk($deleteMap) !== count($deleteMap)) {
 							if ($transacted)
@@ -273,17 +276,17 @@ abstract class GxActiveRecord extends CActiveRecord {
 						return false;
 					}
 				}
-				// If transacted, commit the transaction.
-				if ($transacted)
-					$transaction->commit();
-			} catch (Exception $ex) {
-				// If there is an exception, roll back the transaction, if transacted. If not transacted, rethrow the exception.
-				if ($transacted) {
-					$transaction->rollback();
-					return false;
-				} else
-					throw $ex;
-			}
+			} // This is the end of the loop "save each related data".
+
+			// If transacted, commit the transaction.
+			if ($transacted)
+				$transaction->commit();
+		} catch (Exception $ex) {
+			// If there is an exception, roll back the transaction...
+			if ($transacted)
+				$transaction->rollback();
+			// ... and rethrow the exception.
+			throw $ex;
 		}
 		return true;
 	}

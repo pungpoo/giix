@@ -52,6 +52,8 @@ class GxCoreHelper {
 					$result .= substr($key, 4);
 				else
 					$result .= "'{$key}'";
+			else // To be future-proof.
+				throw new InvalidArgumentException(Yii::t('giix', 'Array key type not supported.'));
 
 			// The assignment.
 			$result .= ' => ';

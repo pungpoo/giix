@@ -140,12 +140,13 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Saves the current record and its MANY_MANY relations.
 	 * This method will save the active record and update
 	 * the necessary pivot tables for the MANY_MANY relations.
+	 * The pivot table is the table that maps the relationship between two
+	 * other tables in a MANY_MANY relation.
 	 * This method won't save data on other active record models.
 	 * @param array $relatedData The relation data in the format returned by {@link GxController::getRelatedData}.
 	 * @param boolean $runValidation Whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database. This applies to all (including related) models.
-	 * This does not apply for related models when in batch mode. This does not apply for deletes. If you want to validate deletes, disable
-	 * batch mode and use the {@link CActiveRecord::onBeforeDelete} event.
+	 * This does not apply for related models when in batch mode. This does not apply for deletes.
 	 * @param array $attributes List of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved. This applies only to the main model.
 	 * @param array $options Additional options. Valid options are:

@@ -48,11 +48,11 @@ abstract class GxController extends Controller {
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CModel $model the model to be validated
-	 * @param string $form the name of the form
+	 * @param CModel|array $model The model or array of models to be validated.
+	 * @param string $form The name of the form. Optional.
 	 */
-	protected function performAjaxValidation($model, $form) {
-		if (Yii::app()->request->isAjaxRequest && $_POST['ajax'] == $form) {
+	protected function performAjaxValidation($model, $form = null) {
+		if (Yii::app()->request->isAjaxRequest && (($form === null) || ($_POST['ajax'] == $form))) {
 			echo GxActiveForm::validate($model);
 			Yii::app()->end();
 		}

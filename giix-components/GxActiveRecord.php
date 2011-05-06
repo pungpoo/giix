@@ -151,8 +151,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * meaning all attributes that are loaded from DB will be saved. This applies only to the main model.
 	 * @param array $options Additional options. Valid options are:
 	 * <ul>
-	 * <li>'withTransaction', boolean: Whether to use a transaction.
-	 * Note: if there are no changes in the relations, no transaction will be used.</li>
+	 * <li>'withTransaction', boolean: Whether to use a transaction.</li>
 	 * <li>'batch', boolean: Whether to try to do the deletes and inserts in batch.
 	 * While batches may be faster, using active record instances provides better control, validation, event support etc.
 	 * Batch is only supported for deletes.</li>
@@ -170,7 +169,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 						)
 						,
 						// The specified options.
-						$options);
+						$options
+		);
 
 		try {
 			// Start the transaction if required.
@@ -320,6 +320,162 @@ abstract class GxActiveRecord extends CActiveRecord {
 			}
 		} // This is the end of the loop "save each related data".
 
+		return true;
+	}
+
+	/**
+	 * Saves multiple active records.
+	 * This method can detect automatically all new active records
+	 * having a BELONGS_TO relation (to HAS_ONE or to HAS_MANY) and
+	 * fill in the data for their FK if it is null.
+	 * The order of the active records in the $models array parameter is
+	 * important to make it work. The models that need to be saved first
+	 * should come first in the array.
+	 * @param GxActiveRecord|array $models A model or an array of models.
+	 * The array should follow the format:
+	 * <pre>
+	 * array(
+	 *   array(
+	 *     'model' => $theModelInstance,
+	 *     'modelOptions' => array( ... ),
+	 *   ),
+	 *   array(
+	 *     'model' => $anotherModelInstance,
+	 *     'modelOptions' => array( ... ),
+	 *   ),
+	 * )
+	 * </pre>
+	 * The following modelOptions are available:
+	 * <ul>
+	 * <li>'runValidation', boolean: see {@link CActiveRecord::save} for details. Defauls to true.</li>
+	 * <li>'attributes', array: see {@link CActiveRecord::save} for details. Defauls to null.</li>
+	 * <li>'relatedData', array: see {@link saveWithRelated} for details. Defauls to null.</li>
+	 * <li>'batch', boolean: see {@link saveWithRelated} for details. Applies only to the related data. Defauls to true.</li>
+	 * <li></li>
+	 * </ul>
+	 * @param boolean $runValidation Whether to perform validation before saving all the records.
+	 * If the validation fails, the record will not be saved to database.
+	 * Optional. If true, forces the validation on all records. If false,
+	 * disables the validation on all records. If null, the options for
+	 * each record will be followed. Defaults to true.
+	 * @param array $options Additional options. Valid options are:
+	 * <ul>
+	 * <li>'withTransaction', boolean: Whether to use a transaction.
+	 * Defaults to true.</li>
+	 * <li>'detectRelations', boolean: detect automatically all new active records
+	 * having a BELONGS_TO relation (to HAS_ONE or to HAS_MANY) and
+	 * fill in the data for its FK if it is null.
+	 * Defaults to true.</li>
+	 * </ul>
+	 * @return boolean Whether the saving succeeds.
+	 * @see {@link CActiveRecord::save}.
+	 * @see {@link saveWithRelated}.
+	 */
+	public static function saveMultiple($models, $runValidation = true, $options = array()) {
+		// Merge the specified options with the default options.
+		$options = array_merge(
+						// The default options.
+						array(
+							'withTransaction' => true,
+							'detectRelations' => true,
+						)
+						,
+						// The specified options.
+						$options
+		);
+		// Define the default model options.
+		$defaultModelOptions = array(
+			'runValidation' => true,
+			'attributes' => null,
+			'relatedData' => null,
+			'batch' => true,
+		);
+
+		// If $models is a single record, make it an array.
+		if (!is_array($models))
+			$models = array($models);
+
+		// The saved models array.
+		$savedModels = array();
+
+		try {
+			// Start the transaction if required.
+			if ($options['withTransaction'] && ($this->dbConnection->currentTransaction === null)) {
+				$transacted = true;
+				$transaction = $this->dbConnection->beginTransaction();
+			} else
+				$transacted = false;
+
+			foreach ($models as $modelItem) {
+				// Get the model instance.
+				$model = $modelItem['model'];
+				// Merge the options.
+				if (isset($modelItem['modelOptions']) && ($modelItem['modelOptions'] !== array()))
+					$modelOptions = array_merge($defaultModelOptions, $modelItem['modelOptions']);
+				else
+					$modelOptions = $defaultModelOptions;
+				$modelOptions['runValidation'] = ($runValidation === null) ? $modelOptions['runValidation'] : $runValidation;
+
+				// Detect automatically the new active record and fill in the data for its FK.
+				if ($options['detectRelations']) {
+					// Find if the model is new...
+					if ($model->getIsNewRecord()) {
+						// ... if the model has a BELONGS_TO relation...
+						foreach ($model->relations() as $relationName => $relationData) {
+							if ($relationData[0] === GxActiveRecord::BELONGS_TO) {
+								// ...and if its FK is null.
+								$fkName = $relationData[2];
+								if ($model->$fkName === null) {
+									// The FK is null. We need to fill it in.
+									// We take the related model class name.
+									$relatedClassName = $relationData[1];
+									// And look for it in the array of the already saved models.
+									if (array_key_exists($relatedClassName, $savedModels)) {
+										// We assume that this is the related model and
+										// we assume that the relation is to the PK.
+										$model->$fkName = $savedModels[$relatedClassName]->getPrimaryKey();
+									} else {
+										// Related model not found.
+										// We can't continue without filling up the FK!
+										throw new Exception('giix', 'Related model not found.'); // TODO.
+									}
+								}
+							}
+						}
+					}
+				} // This is the end of 'detectRelations' loop.
+				// Save the model
+				if (!$this->save($modelOptions['runValidation'], $modelOptions['attributes'])) {
+					if ($transacted)
+						$transaction->rollback();
+					return false;
+				}
+
+				// If there is related data, use saveRelated.
+				if (!empty($modelOptions['relatedData'])) {
+					if (!$model->saveRelated($modelOptions['relatedData'], $modelOptions['runValidation'], $modelOptions['batch'])) {
+						if ($transacted)
+							$transaction->rollback();
+						return false;
+					}
+				}
+
+				// Add the model to the saved models array.
+				// Only the last model of each class is recorded.
+				if ($options['detectRelations'])
+					$savedModels[get_class($model)] = $model;
+			}
+
+			// If transacted, commit the transaction.
+			if ($transacted)
+				$transaction->commit();
+		} catch (Exception $ex) {
+			// If there is an exception, roll back the transaction...
+			if ($transacted)
+				$transaction->rollback();
+			// ... and rethrow the exception.
+			throw $ex;
+		}
 		return true;
 	}
 

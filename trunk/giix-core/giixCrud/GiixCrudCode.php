@@ -148,9 +148,15 @@ class GiixCrudCode extends CrudCode {
 	 * @return string The source code line for the attribute.
 	 */
 	public function generateDetailViewAttribute($modelClass, $column) {
-		if (!$column->isForeignKey)
-			return "'{$column->name}'";
-		else {
+		if (!$column->isForeignKey) {
+			if (strtoupper($column->dbType) == 'TINYINT(1)'
+					|| strtoupper($column->dbType) == 'BIT'
+					|| strtoupper($column->dbType) == 'BOOL'
+					|| strtoupper($column->dbType) == 'BOOLEAN') {
+				return "'{$column->name}:boolean'";
+			} else
+				return "'{$column->name}'";
+		} else {
 			// Find the relation name for this column.
 			$relation = $this->findRelation($modelClass, $column);
 			$relationName = $relation[0];

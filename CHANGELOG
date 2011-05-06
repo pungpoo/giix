@@ -4,6 +4,7 @@ giix Change Log
 Version 1.6, to be released
 ----------------------------
 Bug: Wrong pivot class name were generated when there were table prefixes.
+Enh: Better support to boolean values: formatted display in view "view".
 
 Version 1.5, 2011-05-06
 ----------------------------

@@ -74,7 +74,8 @@ class GiixModelCode extends ModelCode {
 			if (isset($this->relations[$className])) {
 				foreach ($this->relations[$className] as $relationName => $relationData) {
 					if (preg_match('/^array\(self::MANY_MANY,.*?,\s*\'(.+?)\(/', $relationData, $matches)) {
-						$pivotTableName = $matches[1];
+						// Clean the table name if needed.
+						$pivotTableName = str_replace(array('{', '}'), '', $matches[1]);
 						$pivotModels[$relationName] = $this->generateClassName($pivotTableName);
 					}
 				}

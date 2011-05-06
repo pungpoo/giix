@@ -40,9 +40,6 @@ $form = $this->beginWidget('GxActiveForm', array(
 <?php endforeach; ?>
 
 <?php echo "<?php
-echo GxHtml::Button(Yii::t('app', 'Cancel'), array(
-			'submit' => array('". strtolower($this->modelClass) ."/admin')
-		));
 echo GxHtml::submitButton(Yii::t('app', 'Save'));
 \$this->endWidget();
 ?>\n"; ?>

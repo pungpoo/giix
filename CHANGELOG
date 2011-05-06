@@ -11,6 +11,7 @@ Bug: Do not swallow exceptions anymore in GxActiveRecord::saveWithRelated.
 Bug: Now more code is wrapped in the try-catch block to protect the integrity of the transaction in GxActiveRecord::saveWithRelated.
 Bug: Fixed issue 5.
 Enh: Introduced GxActiveRecord::saveMultiple.
+Chg: Removed the "cancel" button from the _form view.
 
 Version 1.4, 2010-12-30
 ----------------------------

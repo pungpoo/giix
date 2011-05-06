@@ -1,6 +1,9 @@
 giix Change Log
 ===============
 
+Version 1.6, to be released
+----------------------------
+
 Version 1.5, 2011-05-06
 ----------------------------
 Chg: GxController extends again from Controller (reverted from version 1.2).

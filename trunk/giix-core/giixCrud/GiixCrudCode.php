@@ -314,4 +314,16 @@ class GiixCrudCode extends CrudCode {
 		return $result;
 	}
 
+	public function successMessage() {
+		return <<<EOM
+<p><strong>Sweet!</strong></p>
+<ul style="list-style-type: none; padding-left: 0;">
+	<li><img src="http://giix.org/icons/love.png"> Show how you love giix on <a href="http://www.yiiframework.com/forum/index.php?/topic/13154-giix-%E2%80%94-gii-extended/">the forum</a> and on its <a href="http://www.yiiframework.com/extension/giix">extension page</a></li>
+	<li><img src="http://giix.org/icons/vote.png"> Upvote <a href="http://www.yiiframework.com/extension/giix">giix</a></li>
+	<li><img src="http://giix.org/icons/powered.png"> Show everybody that you are using giix in <a href="http://www.yiiframework.com/forum/index.php?/topic/19226-powered-by-giix/">Powered by giix</a></li>
+	<li><img src="http://giix.org/icons/donate.png"> <a href="http://giix.org/">Donate</a></li>
+</ul>
+EOM;
+	}
+
 }

@@ -188,6 +188,7 @@ class GiixModelCode extends ModelCode {
 	<li><img src="http://giix.org/icons/powered.png"> Show everybody that you are using giix in <a href="http://www.yiiframework.com/forum/index.php?/topic/19226-powered-by-giix/">Powered by giix</a></li>
 	<li><img src="http://giix.org/icons/donate.png"> <a href="http://giix.org/">Donate</a></li>
 </ul>
+<p style="margin: 2px 0; position: relative; text-align: right; top: -15px;">icons by <a href="http://www.famfamfam.com/lab/icons/silk/">famfamfam.com</a></p>
 EOM;
 	}
 

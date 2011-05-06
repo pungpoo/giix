@@ -6,6 +6,7 @@ How to install giix?
 
 See the README file before installing giix.
 See INSTALL file for instructions.
+Read the Yii guide at <http://www.yiiframework.com/doc/guide>.
 Read the gii documentation at <http://www.yiiframework.com/doc/api/GiiModule>.
 
 How to use giix?
@@ -16,6 +17,7 @@ See the README file before using giix.
 After installing, you will see the giix generators on the gii page.
 The giix generators' names start with "giix".
 
+Read the Yii guide at <http://www.yiiframework.com/doc/guide>.
 Read the gii documentation at <http://www.yiiframework.com/doc/api/GiiModule>.
 
 I need help! Where should I go?

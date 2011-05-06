@@ -65,7 +65,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	public function __toString() {
 		$representingColumn = $this->representingColumn();
 
-		if ($representingColumn === null)
+		if (($representingColumn === null) || (is_array($representingColumn) && ($representingColumn === array())))
 			if ($this->getTableSchema()->primaryKey !== null)
 				$representingColumn = $this->getTableSchema()->primaryKey;
 			else

@@ -53,10 +53,10 @@ giix is still in development. Some changes may break backwards compatibility.
 REQUIREMENTS
 ------------
 
-Yii 1.1.4+ is required.
+Yii 1.1.7+ is required.
 
 giix is tested under:
-- Yii trunk code, revision 2766
+- Yii trunk code, revision 3204
 - Linux
 - Apache 2.2
 - MySQL 5.0

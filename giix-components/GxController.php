@@ -3,16 +3,16 @@
 /**
  * GxController class file.
  *
- * @author Rodrigo Coelho <giix@rodrigocoelho.com.br>
- * @link http://rodrigocoelho.com.br/giix/
+ * @author Rodrigo Coelho <rodrigo@giix.org>
+ * @link http://giix.org/
  * @copyright Copyright &copy; 2010-2011 Rodrigo Coelho
- * @license http://rodrigocoelho.com.br/giix/license/ New BSD License
+ * @license http://giix.org/license/ New BSD License
  */
 
 /**
  * GxController is the base class for the generated controllers.
  *
- * @author Rodrigo Coelho <giix@rodrigocoelho.com.br>
+ * @author Rodrigo Coelho <rodrigo@giix.org>
  * @since 1.0
  */
 abstract class GxController extends Controller {

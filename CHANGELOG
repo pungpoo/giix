@@ -8,6 +8,7 @@ Enh: Better support to boolean values: formatted display in view "view".
 Bug: Added proper parameter checks in GxActiveRecord::__toString.
 Chg: Raised Yii version in "requirements".
 Enh: Added support for entering PK values. See http://code.google.com/p/yii/issues/detail?id=1770.
+Chg: New default value for GxActiveRecord::saveMultiple: 'detectRelations' option is now false by default.
 
 Version 1.5, 2011-05-06
 ----------------------------

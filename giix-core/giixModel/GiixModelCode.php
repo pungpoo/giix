@@ -130,7 +130,7 @@ class GiixModelCode extends ModelCode {
 		$rules = array();
 		$null = array();
 		foreach ($table->columns as $column) {
-			if ($column->isPrimaryKey && $table->sequenceName !== null)
+			if ($column->autoIncrement)
 				continue;
 			if (!(!$column->allowNull && $column->defaultValue === null))
 				$null[] = $column->name;

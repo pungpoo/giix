@@ -23,7 +23,7 @@ $form = $this->beginWidget('GxActiveForm', array(
 	<?php echo "<?php echo \$form->errorSummary(\$model); ?>\n"; ?>
 
 <?php foreach ($this->tableSchema->columns as $column): ?>
-<?php if (!$column->isPrimaryKey): ?>
+<?php if (!$column->autoIncrement): ?>
 		<div class="row">
 		<?php echo "<?php echo " . $this->generateActiveLabel($this->modelClass, $column) . "; ?>\n"; ?>
 		<?php echo "<?php " . $this->generateActiveField($this->modelClass, $column) . "; ?>\n"; ?>

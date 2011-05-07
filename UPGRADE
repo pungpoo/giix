@@ -15,6 +15,7 @@ General upgrade intructions
 - Clean up your cache directory.
 - Remove the "giix-core" and "giix-components" diretories from your application's
   extensions directory.
+- Check the requirements of the new version in the README file.
 - Then follow the install instructions for the new release.
 
 Upgrading from 1.5

@@ -365,7 +365,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * <li>'detectRelations', boolean: detect automatically all new active records
 	 * having a BELONGS_TO relation (to HAS_ONE or to HAS_MANY) and
 	 * fill in the data for its FK if it is null.
-	 * Defaults to true.</li>
+	 * Defaults to false.</li>
 	 * </ul>
 	 * @return boolean Whether the saving succeeds.
 	 * @see {@link CActiveRecord::save}.
@@ -377,7 +377,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 						// The default options.
 						array(
 							'withTransaction' => true,
-							'detectRelations' => true,
+							'detectRelations' => false,
 						)
 						,
 						// The specified options.

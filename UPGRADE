@@ -20,7 +20,7 @@ General upgrade intructions
 
 Upgrading from 1.5
 ---------------------
-No modification required.
+The new default value for the option 'detectRelations' in the method GxActiveRecord::saveMultiple is false.
 
 Upgrading from 1.4
 ---------------------

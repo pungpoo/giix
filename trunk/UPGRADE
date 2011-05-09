@@ -18,6 +18,10 @@ General upgrade intructions
 - Check the requirements of the new version in the README file.
 - Then follow the install instructions for the new release.
 
+Upgrading from 1.6
+---------------------
+No modification required.
+
 Upgrading from 1.5
 ---------------------
 The new default value for the option 'detectRelations' in the method GxActiveRecord::saveMultiple is false.

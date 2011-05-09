@@ -137,6 +137,45 @@ abstract class GxActiveRecord extends CActiveRecord {
 	}
 
 	/**
+	 * Fills the provided array of PK values with the composite PK column names.
+	 * Warning: the order of the values in the array must match the order of
+	 * the columns in the composite PK.
+	 * The returned array has the format required by {@link CActiveRecord::findByPk}
+	 * for composite keys.
+	 * The method supports single PK also.
+	 * @param mixed $pk The PK value or array of PK values.
+	 * @return array The array of PK values, indexed by column name.
+	 * {@see CActiveRecord::findByPk}
+	 * @throws InvalidArgumentException if the count of values doesn't match the
+	 * count of columns in the composite PK.
+	 */
+	public function fillPkColumnNames($pk) {
+		// Get the table PK column names.
+		$columnNames = $this->getTableSchema()->primaryKey;
+
+		// Check if the count of values and columns match.
+		$columnCount = count($columnNames);
+		if (count($pk) !== $columnCount)
+			throw new InvalidArgumentException(Yii::t('app', 'The count of values in $pk ({countPk}) does not match the count of columns in the composite PK ({countColumns}).'), array(
+				'countPk' => count($pk),
+				'countColumns' => $columnCount,
+			));
+
+		// Build the array indexed by the column names.
+		if ($columnCount === 1) {
+			if (is_array($pk))
+				$pk = $pk[0];
+			return array($columnNames => $pk);
+		} else {
+			$result = array();
+			for ($columnIndex = 0; $columnIndex < $columnCount; $columnIndex++) {
+				$result[$columnNames[$columnIndex]] = $pk[$columnIndex];
+			}
+			return $result;
+		}
+	}
+
+	/**
 	 * Saves the current record and its MANY_MANY relations.
 	 * This method will save the active record and update
 	 * the necessary pivot tables for the MANY_MANY relations.

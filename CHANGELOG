@@ -9,6 +9,8 @@ Bug: Added proper parameter checks in GxActiveRecord::__toString.
 Chg: Raised Yii version in "requirements".
 Enh: Added support for entering PK values. See http://code.google.com/p/yii/issues/detail?id=1770.
 Chg: New default value for GxActiveRecord::saveMultiple: 'detectRelations' option is now false by default.
+Enh: Added GxActiveRecord::fillPkColumnNames.
+Enh: Now GxController::loadModel supports composite PK, has autodetection features and can be used with any attribute (column).
 
 Version 1.5, 2011-05-06
 ----------------------------

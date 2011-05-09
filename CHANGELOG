@@ -1,6 +1,9 @@
 giix Change Log
 ===============
 
+Version 1.7, to be released
+----------------------------
+
 Version 1.6, 2011-05-09
 ----------------------------
 Bug: Wrong pivot class name was generated when there were table prefixes.

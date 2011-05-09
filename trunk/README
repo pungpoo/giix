@@ -9,6 +9,7 @@ giix on...
 Yii Extension Repository: http://www.yiiframework.com/extension/giix/
 Yii Forum:                http://www.yiiframework.com/forum/index.php?/topic/13154-giix-%E2%80%94-gii-extended/
 Google Code:              http://giix.googlecode.com/
+Ohloh:                    http://www.ohloh.net/p/giix
 
 giix is gii Extended, a code generator for Yii PHP framework.
 giix is inspired and based on gii-template-collection (gtc), by Herbert Maschke (thyseus).
@@ -38,7 +39,9 @@ giix extends Yii's gii by providing:
 - Some (incipient) support for tables with composite primary keys.
 - Generated code is completely free from styling and formatting. Your CSS controls the presentation.
 - Generated code is (almost) free of comments.
-- Well documented and commented source code. You can understand and modify anything you want.
+- Well documented and commented source code. Ohloh says that 40% of the lines in the code are comments! You can understand and modify anything you want.
+
+And a lot more! Read the CHANGELOG file and the (richly commented) source code to fully leverage giix's power.
 
 Some of these features come from gtc.
 

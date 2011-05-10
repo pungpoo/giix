@@ -86,6 +86,13 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Finds all active records satisfying the specified condition, selecting only the requested
 	 * attributes and, if specified, the primary keys.
 	 * See {@link CActiveRecord::find} for detailed explanation about $condition and $params.
+	 * #MethodTracker
+	 * This method is based on {@link CActiveRecord::findAll}, from version 1.1.7. Changes:
+	 * <ul>
+	 * <li>Selects only the specified attributes.</li>
+	 * <li>Detects and selects the representing column.</li>
+	 * <li>Detects and selects the PK attribute.</li>
+	 * </ul>
 	 * @param string|array $attributes the names of the attributes to be selected.
 	 * Optional. If not specified, the {@link representingColumn} will be used.
 	 * @param boolean $withPk specifies if the primary keys will be selected.

@@ -34,10 +34,13 @@ class GiixModelCode extends ModelCode {
 
 	/**
 	 * Prepares the code files to be generated.
-	 * Overrides and based on ModelCode::prepare.
-	 * Changes: generates the base model,
-	 * provides the representing column for the table and
-	 * provides the pivot class names for MANY_MANY relations.
+	 * #MethodTracker
+	 * This method is based on {@link ModelCode::prepare}, from version 1.1.3. Changes:
+	 * <ul>
+	 * <li>Generates the base model.</li>
+	 * <li>Provides the representing column for the table.</li>
+	 * <li>Provides the pivot class names for MANY_MANY relations.</li>
+	 * </ul>
 	 */
 	public function prepare() {
 		$this->files = array();
@@ -109,8 +112,11 @@ class GiixModelCode extends ModelCode {
 
 	/**
 	 * Lists the template files.
-	 * Overrides and based on ModelCode::requiredTemplates.
-	 * Changes: includes the base model.
+	 * #MethodTracker
+	 * This method is based on {@link ModelCode::requiredTemplates}, from version 1.1.3. Changes:
+	 * <ul>
+	 * <li>Includes the base model.</li>
+	 * </ul>
 	 * @return array A list of required template filenames.
 	 */
 	public function requiredTemplates() {
@@ -122,7 +128,11 @@ class GiixModelCode extends ModelCode {
 
 	/**
 	 * Generates the rules for table fields.
-	 * Overrides ModelCode::generateRules.
+	 * #MethodTracker
+	 * This method is based on {@link ModelCode::generateRules}, from version 1.1.3. Changes:
+	 * <ul>
+	 * <li>Adds the rule to fill empty attributes with null.</li>
+	 * </ul>
 	 * @param CDbTableSchema $table The table definition.
 	 * @return array The rules for the table.
 	 */
@@ -180,6 +190,15 @@ class GiixModelCode extends ModelCode {
 		return reset($columns)->name;
 	}
 
+	/**
+	 * Returns the message to be displayed when the newly generated code is saved successfully.
+	 * #MethodTracker
+	 * This method overrides {@link CCodeModel::successMessage}, from version 1.1.7. Changes:
+	 * <ul>
+	 * <li>Custom giix success message.</li>
+	 * </ul>
+	 * @return string The message to be displayed when the newly generated code is saved successfully.
+	 */
 	public function successMessage() {
 		return <<<EOM
 <p><strong>Sweet!</strong></p>

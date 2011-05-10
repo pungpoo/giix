@@ -19,8 +19,11 @@ class GxHtml extends CHtml {
 
 	/**
 	 * Renders a checkbox list for a model attribute.
-	 * Overrides and based on {@link CHtml::activeCheckBoxList}.
-	 * Changes: added support to HAS_MANY and MANY_MANY relations.
+	 * #MethodTracker
+	 * This method overrides {@link CHtml::activeCheckBoxList}, from version 1.1.3. Changes:
+	 * <ul>
+	 * <li>Added support to HAS_MANY and MANY_MANY relations.</li>
+	 * </ul>
 	 * @see {@link CHtml::activeCheckBoxList} for more information.
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
@@ -43,9 +46,12 @@ class GxHtml extends CHtml {
 
 	/**
 	 * Generates the data suitable for list-based HTML elements.
-	 * This method is based on {@link CHtml::listData}.
-	 * Changes: this method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()} and
-	 * tables with composite primary keys.
+	 * #MethodTracker
+	 * This method is based on {@link CHtml::listData}, from version 1.1.3. Changes:
+	 * <ul>
+	 * <li>This method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()}.</li>
+	 * <li>This method supports tables with composite primary keys.</li>
+	 * </ul>
 	 * @see {@link CHtml::listData} for more information.
 	 * @param array $models a list of model objects. Starting from version 1.0.3, this parameter
 	 * can also be an array of associative arrays (e.g. results of {@link CDbCommand::queryAll}).
@@ -106,8 +112,11 @@ class GxHtml extends CHtml {
 
 	/**
 	 * Evaluates the value of the specified attribute for the given model.
-	 * This method is based on {@link CHtml::value}.
-	 * Changes: this method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()}.
+	 * #MethodTracker
+	 * This method is based on {@link CHtml::value}, from version 1.1.3. Changes:
+	 * <ul>
+	 * <li>This method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()}.</li>
+	 * </ul>
 	 * @see {@link CHtml::value} for more information.
 	 * @param mixed $model the model. This can be either an object or an array.
 	 * @param string $attribute the attribute name (use dot to concatenate multiple attributes).
@@ -137,8 +146,11 @@ class GxHtml extends CHtml {
 
 	/**
 	 * Encodes special characters into HTML entities.
-	 * This method is based on {@link CHtml::encode}.
-	 * Changes: this method supports encoding strings in arrays and selective encoding of keys and/or values.
+	 * #MethodTracker
+	 * This method is based on {@link CHtml::encode}, from version 1.1.7. Changes:
+	 * <ul>
+	 * <li>This method supports encoding strings in arrays and selective encoding of keys and/or values.</li>
+	 * </ul>
 	 * @see {@link CHtml::encode} for more information.
 	 * @param string|array $data data to be encoded
 	 * @param boolean $encodeKeys whether to encode array keys

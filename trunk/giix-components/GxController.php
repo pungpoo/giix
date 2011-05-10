@@ -37,6 +37,14 @@ abstract class GxController extends Controller {
 	 * This method is designed to work with the values passed via GET.
 	 * If the data model is not found or there's a malformed key, an
 	 * HTTP exception will be raised.
+	 * #MethodTracker
+	 * This method is based on the gii generated method controller::loadModel, from version 1.1.7. Changes:
+	 * <ul>
+	 * <li>Support to composite PK.</li>
+	 * <li>Support to use any attribute (column) name besides the PK.</li>
+	 * <li>Support to multiple attributes.</li>
+	 * <li>Automatically detects the PK column names.</li>
+	 * </ul>
 	 * @param mixed $key The key or keys of the model to be loaded.
 	 * If the key is a string or an integer, the method will use the tables' PK if
 	 * the PK has a single column. If the table has a composite PK and the key
@@ -137,6 +145,11 @@ abstract class GxController extends Controller {
 
 	/**
 	 * Performs the AJAX validation.
+	 * #MethodTracker
+	 * This method is based on the gii generated method controller::performAjaxValidation, from version 1.1.7. Changes:
+	 * <ul>
+	 * <li>Supports multiple models.</li>
+	 * </ul>
 	 * @param CModel|array $model The model or array of models to be validated.
 	 * @param string $form The name of the form. Optional.
 	 */

@@ -20,8 +20,11 @@ class GxActiveForm extends CActiveForm {
 	/**
 	 * Renders a checkbox list for a model attribute.
 	 * This method is a wrapper of {@link GxHtml::activeCheckBoxList}.
-	 * Overrides and based on {@link CActiveForm::checkBoxList}.
-	 * Changes: uses GxHtml.
+	 * #MethodTracker
+	 * This method is based on {@link CActiveForm::checkBoxList}, from version 1.1.3. Changes:
+	 * <ul>
+	 * <li>Uses GxHtml.</li>
+	 * </ul>
 	 * @see {@link CActiveForm::checkBoxList} for more information.
 	 * @param CModel $model The data model.
 	 * @param string $attribute The attribute.

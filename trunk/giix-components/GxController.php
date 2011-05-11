@@ -38,7 +38,7 @@ abstract class GxController extends Controller {
 	 * If the data model is not found or there's a malformed key, an
 	 * HTTP exception will be raised.
 	 * #MethodTracker
-	 * This method is based on the gii generated method controller::loadModel, from version 1.1.7. Changes:
+	 * This method is based on the gii generated method controller::loadModel, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Support to composite PK.</li>
 	 * <li>Support to use any attribute (column) name besides the PK.</li>
@@ -146,7 +146,7 @@ abstract class GxController extends Controller {
 	/**
 	 * Performs the AJAX validation.
 	 * #MethodTracker
-	 * This method is based on the gii generated method controller::performAjaxValidation, from version 1.1.7. Changes:
+	 * This method is based on the gii generated method controller::performAjaxValidation, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Supports multiple models.</li>
 	 * </ul>

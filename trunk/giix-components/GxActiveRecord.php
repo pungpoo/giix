@@ -87,7 +87,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * attributes and, if specified, the primary keys.
 	 * See {@link CActiveRecord::find} for detailed explanation about $condition and $params.
 	 * #MethodTracker
-	 * This method is based on {@link CActiveRecord::findAll}, from version 1.1.7. Changes:
+	 * This method is based on {@link CActiveRecord::findAll}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Selects only the specified attributes.</li>
 	 * <li>Detects and selects the representing column.</li>

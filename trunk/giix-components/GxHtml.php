@@ -20,7 +20,7 @@ class GxHtml extends CHtml {
 	/**
 	 * Renders a checkbox list for a model attribute.
 	 * #MethodTracker
-	 * This method overrides {@link CHtml::activeCheckBoxList}, from version 1.1.3 (r2247). Changes:
+	 * This method is based on {@link CHtml::activeCheckBoxList}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Added support to HAS_MANY and MANY_MANY relations.</li>
 	 * </ul>
@@ -33,21 +33,22 @@ class GxHtml extends CHtml {
 	 */
 	public static function activeCheckBoxList($model, $attribute, $data, $htmlOptions = array()) {
 		self::resolveNameID($model, $attribute, $htmlOptions);
-		$selection = self::selectData(self::resolveValue($model, $attribute));
+		$selection = self::selectData(self::resolveValue($model, $attribute)); // #Change: Added support to HAS_MANY and MANY_MANY relations.
 		if ($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
 		$name = $htmlOptions['name'];
 		unset($htmlOptions['name']);
 
 		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		return self::hiddenField($name, '', $hiddenOptions)
-		. self::checkBoxList($name, $selection, $data, $htmlOptions);
+		$hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
+
+		return $hidden . self::checkBoxList($name, $selection, $data, $htmlOptions);
 	}
 
 	/**
 	 * Generates the data suitable for list-based HTML elements.
-	 * #MethodTracker
-	 * This method is based on {@link CHtml::listData}, from version 1.1.3 (r2247). Changes:
+	 * #MethodTracker (complex changes)
+	 * This method is based on {@link CHtml::listData}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>This method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()}.</li>
 	 * <li>This method supports tables with composite primary keys.</li>
@@ -113,7 +114,7 @@ class GxHtml extends CHtml {
 	/**
 	 * Evaluates the value of the specified attribute for the given model.
 	 * #MethodTracker
-	 * This method is based on {@link CHtml::value}, from version 1.1.3 (r2247). Changes:
+	 * This method improves {@link CHtml::value}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>This method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()}.</li>
 	 * </ul>
@@ -131,23 +132,15 @@ class GxHtml extends CHtml {
 				return $model->__toString();
 			else
 				return $defaultValue;
+		} else {
+			return parent::value($model, $attribute, $defaultValue);
 		}
-
-		foreach (explode('.', $attribute) as $name) {
-			if (is_object($model))
-				$model = $model->$name;
-			else if (is_array($model) && isset($model[$name]))
-				$model = $model[$name];
-			else
-				return $defaultValue;
-		}
-		return $model;
 	}
 
 	/**
 	 * Encodes special characters into HTML entities.
 	 * #MethodTracker
-	 * This method is based on {@link CHtml::encode}, from version 1.1.7 (r3135). Changes:
+	 * This method improves {@link CHtml::encode}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>This method supports encoding strings in arrays and selective encoding of keys and/or values.</li>
 	 * </ul>

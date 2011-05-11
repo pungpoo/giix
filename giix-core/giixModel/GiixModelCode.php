@@ -35,7 +35,7 @@ class GiixModelCode extends ModelCode {
 	/**
 	 * Prepares the code files to be generated.
 	 * #MethodTracker
-	 * This method is based on {@link ModelCode::prepare}, from version 1.1.3 (r2247). Changes:
+	 * This method is based on {@link ModelCode::prepare}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Generates the base model.</li>
 	 * <li>Provides the representing column for the table.</li>
@@ -43,10 +43,6 @@ class GiixModelCode extends ModelCode {
 	 * </ul>
 	 */
 	public function prepare() {
-		$this->files = array();
-
-		$templatePath = $this->templatePath;
-
 		if (($pos = strrpos($this->tableName, '.')) !== false) {
 			$schema = substr($this->tableName, 0, $pos);
 			$tableName = substr($this->tableName, $pos + 1);
@@ -65,6 +61,9 @@ class GiixModelCode extends ModelCode {
 		}
 		else
 			$tables=array($this->getTableSchema($this->tableName));
+
+		$this->files = array();
+		$templatePath = $this->templatePath;
 
 		$this->relations = $this->generateRelations();
 
@@ -113,7 +112,7 @@ class GiixModelCode extends ModelCode {
 	/**
 	 * Lists the template files.
 	 * #MethodTracker
-	 * This method is based on {@link ModelCode::requiredTemplates}, from version 1.1.3 (r2247). Changes:
+	 * This method is based on {@link ModelCode::requiredTemplates}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Includes the base model.</li>
 	 * </ul>
@@ -129,7 +128,7 @@ class GiixModelCode extends ModelCode {
 	/**
 	 * Generates the rules for table fields.
 	 * #MethodTracker
-	 * This method is based on {@link ModelCode::generateRules}, from version 1.1.3 (r2247). Changes:
+	 * This method overrides {@link ModelCode::generateRules}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Adds the rule to fill empty attributes with null.</li>
 	 * </ul>

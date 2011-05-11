@@ -35,7 +35,7 @@ class GiixCrudCode extends CrudCode {
 	/**
 	 * Adds the new model attributes (class properties) to the rules.
 	 * #MethodTracker
-	 * This method overrides {@link CrudCode::rules}, from version 1.1.3. Changes:
+	 * This method overrides {@link CrudCode::rules}, from version 1.1.3 (r2247). Changes:
 	 * <ul>
 	 * <li>Adds the rule for the new attribute in the code generation form: authtype.</li>
 	 * </ul>
@@ -49,7 +49,7 @@ class GiixCrudCode extends CrudCode {
 	/**
 	 * Sets the labels for the new model attributes (class properties).
 	 * #MethodTracker
-	 * This method overrides {@link CrudCode::attributeLabels}, from version 1.1.3. Changes:
+	 * This method overrides {@link CrudCode::attributeLabels}, from version 1.1.3 (r2247). Changes:
 	 * <ul>
 	 * <li>Adds the labels for the new attributes in the code generation form: authtype; enable_ajax_validateion.</li>
 	 * </ul>
@@ -66,7 +66,7 @@ class GiixCrudCode extends CrudCode {
 	 * to create the appropriate active input field based on
 	 * the model attribute field type on the database.
 	 * #MethodTracker
-	 * This method is based on {@link CrudCode::generateActiveField}, from version 1.1.3. Changes:
+	 * This method is based on {@link CrudCode::generateActiveField}, from version 1.1.3 (r2247). Changes:
 	 * <ul>
 	 * <li>All styling is removed.</li>
 	 * </ul>
@@ -333,7 +333,7 @@ class GiixCrudCode extends CrudCode {
 	/**
 	 * Returns the message to be displayed when the newly generated code is saved successfully.
 	 * #MethodTracker
-	 * This method overrides {@link CrudCode::successMessage}, from version 1.1.7. Changes:
+	 * This method overrides {@link CrudCode::successMessage}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
 	 * <li>Custom giix success message.</li>
 	 * </ul>

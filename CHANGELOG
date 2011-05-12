@@ -4,6 +4,7 @@ giix Change Log
 Version 1.7, to be released
 ----------------------------
 Enh: Updated the code from Yii to version 1.1.7 (r3135).
+Enh: Updated the code from Yii in the default template files and generator's index views to version 1.1.7 (r3135).
 
 Version 1.6, 2011-05-09
 ----------------------------

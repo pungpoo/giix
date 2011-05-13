@@ -169,7 +169,7 @@ class GxHtml extends CHtml {
 		} else if (is_string($data))
 			return parent::encode($data);
 		else
-			throw new CHttpException(500, Yii::t('app', 'There was a server error.'));
+			throw new InvalidArgumentException(Yii::t('giix', 'The argument "data" must be of type string or array.'));
 	}
 
 }

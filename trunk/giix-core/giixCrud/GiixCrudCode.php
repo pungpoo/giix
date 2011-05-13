@@ -51,13 +51,13 @@ class GiixCrudCode extends CrudCode {
 	 * #MethodTracker
 	 * This method overrides {@link CrudCode::attributeLabels}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
-	 * <li>Adds the labels for the new attributes in the code generation form: authtype; enable_ajax_validateion.</li>
+	 * <li>Adds the labels for the new attributes in the code generation form: authtype; enable_ajax_validation.</li>
 	 * </ul>
 	 */
 	public function attributeLabels() {
 		return array_merge(parent::attributeLabels(), array(
 			'authtype' => 'Authentication type',
-			'enable_ajax_validateion' => 'Enable ajax Validation',
+			'enable_ajax_validation' => 'Enable ajax validation',
 		));
 	}
 

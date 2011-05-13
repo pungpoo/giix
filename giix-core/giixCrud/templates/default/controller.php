@@ -82,8 +82,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 			if (!Yii::app()->request->isAjaxRequest)
 				$this->redirect(array('admin'));
 		} else
-			throw new CHttpException(400,
-					Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+			throw new CHttpException(400, Yii::t('app', 'Your request is invalid.'));
 	}
 
 	public function actionIndex() {

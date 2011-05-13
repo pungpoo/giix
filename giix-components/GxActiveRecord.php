@@ -163,9 +163,9 @@ abstract class GxActiveRecord extends CActiveRecord {
 		// Check if the count of values and columns match.
 		$columnCount = count($columnNames);
 		if (count($pk) !== $columnCount)
-			throw new InvalidArgumentException(Yii::t('app', 'The count of values in $pk ({countPk}) does not match the count of columns in the composite PK ({countColumns}).'), array(
-				'countPk' => count($pk),
-				'countColumns' => $columnCount,
+			throw new InvalidArgumentException(Yii::t('giix', 'The count of values in the argument "pk" ({countPk}) does not match the count of columns in the composite PK ({countColumns}).'), array(
+				'{countPk}' => count($pk),
+				'{countColumns}' => $columnCount,
 			));
 
 		// Build the array indexed by the column names.
@@ -293,7 +293,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 			// Get the primary key value of the main model.
 			$thisPkValue = $this->primaryKey;
 			if (is_array($thisPkValue))
-				throw new Exception(Yii::t('giix', 'Composite primary keys are not supported.'), 500);
+				throw new Exception(Yii::t('giix', 'Composite primary keys are not supported.'));
 			// Get the current related models of this relation and map the current related primary keys.
 			$currentRelation = $pivotModelStatic->findAll(new CDbCriteria(array(
 								'select' => $relatedFkName,
@@ -483,7 +483,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 									} else {
 										// Related model not found.
 										// We can't continue without filling up the FK!
-										throw new Exception('giix', 'Related model not found.'); // TODO.
+										throw new Exception(Yii::t('giix', 'Related model not found. Cannot continue without filling up the FK.'));
 									}
 								}
 							}

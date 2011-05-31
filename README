@@ -59,7 +59,7 @@ REQUIREMENTS
 Yii 1.1.7+ is required.
 
 giix is tested under:
-- Yii trunk code, revision 3204
+- Yii trunk code, revision 3250
 - Linux
 - Apache 2.2
 - MySQL 5.0

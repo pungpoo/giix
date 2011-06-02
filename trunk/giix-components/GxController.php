@@ -165,6 +165,9 @@ abstract class GxController extends Controller {
 	 * Only for HAS_MANY and MANY_MANY relations.
 	 * @param array $form The post data.
 	 * @param array $relations A list of model relations in the format returned by {@link CActiveRecord::relations}.
+	 * @param string $uncheckValue Since Yii 1.1.7, htmlOptions (in {@link CHtml::activeCheckBoxList})
+	 * has an option named 'uncheckValue'. If you set it to different values than the default value (''), you will
+	 * need to set the appropriate value to this argument. This method can't be used when 'uncheckValue' is null.
 	 * @return array An array where the keys are the relation names (string) and the values are arrays with the related model primary keys (int|string) or composite primary keys (array with pk name (string) => pk value (int|string)).
 	 * Example of returned data:
 	 * <pre>
@@ -175,12 +178,17 @@ abstract class GxController extends Controller {
 	 * </pre>
 	 * An empty array is returned in case there is no related pk data from the post.
 	 * This data comes directly from the form POST data.
+	 * @see {@link GxHtml::activeCheckBoxList}.
+	 * @throws InvalidArgumentException If uncheckValue is null.
 	 */
-	protected function getRelatedData($form, $relations) {
+	protected function getRelatedData($form, $relations, $uncheckValue = '') {
+		if ($uncheckValue === null)
+			throw new InvalidArgumentException(Yii::t('giix', 'giix can\'t handle automatically the POST data if \'uncheckValue\' is null.'));
+
 		$relatedPk = array();
 		foreach ($relations as $relationName => $relationData) {
 			if (isset($form[$relationName]) && (($relationData[0] == GxActiveRecord::HAS_MANY) || ($relationData[0] == GxActiveRecord::MANY_MANY)))
-				$relatedPk[$relationName] = $form[$relationName] === '' ? null : $form[$relationName];
+				$relatedPk[$relationName] = $form[$relationName] === $uncheckValue ? null : $form[$relationName];
 		}
 		return $relatedPk;
 	}

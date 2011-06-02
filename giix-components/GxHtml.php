@@ -24,6 +24,11 @@ class GxHtml extends CHtml {
 	 * <ul>
 	 * <li>Added support to HAS_MANY and MANY_MANY relations.</li>
 	 * </ul>
+	 * Note: Since Yii 1.1.7, $htmlOptions has an option named 'uncheckValue'.
+	 * If you set it to different values than the default value (''), you will
+	 * need to change the generated code accordingly or use
+	 * GxController::getRelatedData with the appropriate 'uncheckValue'.
+	 * If you set it to null, you will have to handle it manually.
 	 * @see {@link CHtml::activeCheckBoxList} for more information.
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
@@ -38,6 +43,13 @@ class GxHtml extends CHtml {
 			self::addErrorCss($htmlOptions);
 		$name = $htmlOptions['name'];
 		unset($htmlOptions['name']);
+
+		if (array_key_exists('uncheckValue', $htmlOptions)) {
+			$uncheck = $htmlOptions['uncheckValue'];
+			unset($htmlOptions['uncheckValue']);
+		}
+		else
+			$uncheck = '';
 
 		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
 		$hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';

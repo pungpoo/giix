@@ -183,7 +183,7 @@ abstract class GxController extends Controller {
 	 */
 	protected function getRelatedData($form, $relations, $uncheckValue = '') {
 		if ($uncheckValue === null)
-			throw new InvalidArgumentException(Yii::t('giix', 'giix can\'t handle automatically the POST data if \'uncheckValue\' is null.'));
+			throw new InvalidArgumentException(Yii::t('giix', 'giix cannot handle automatically the POST data if "uncheckValue" is null.'));
 
 		$relatedPk = array();
 		foreach ($relations as $relationName => $relationData) {

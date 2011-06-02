@@ -6,6 +6,7 @@ Before installing
 
 1) Make sure you read the Yii guide at <http://www.yiiframework.com/doc/guide>.
 2) Read the Gii documentation at <http://www.yiiframework.com/doc/api/GiiModule>.
+3) Read giix README file. Please give special attention to the "requirements" section.
 
 Installing
 ----------
@@ -32,7 +33,7 @@ when needed, like:
 
 It is recommended to set at least the 'password' and 'ipFilters' properties
 in gii for security.
-Read the gii documentation at <http://www.yiiframework.com/doc/api/GiiModule>.
+For more information see the gii documentation at <http://www.yiiframework.com/doc/api/GiiModule>.
 
 Additionaly, you may remove the entire 'giix-core' directory and generator
 configuration (step 2 above) when releasing your Web application for improved

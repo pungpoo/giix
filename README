@@ -31,6 +31,7 @@ giix extends Yii's gii by providing:
 - Native support for saving MANY_MANY relations with the new method GxActiveRecord::saveWithRelated.
 - Native support for saving multiple (related or not) records with the new method GxActiveRecord::saveMultiple.
 - Automatic string representation for a model via GxActiveRecord::representingColumn() and GxActiveRecord::__toString().
+- Better i18n support and easier to maintain: support to active record labels. You change the label once in the model and it is automatically updated in the views. This is especially useful for plurals.
 - Out-of-the box i18n support by using Yii::t().
 - Appropriate form fields are rendered based on model attribute/table field data type.
 - Separated model and basemodel. Basemodel can be regenerated without overwriting your code in the model.
@@ -59,7 +60,7 @@ REQUIREMENTS
 Yii 1.1.7+ is required.
 
 giix is tested under:
-- Yii trunk code, revision 3251
+- Yii trunk code, revision 3286
 - Linux
 - Apache 2.2
 - MySQL 5.0

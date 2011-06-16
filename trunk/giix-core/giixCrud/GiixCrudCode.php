@@ -276,6 +276,7 @@ class GiixCrudCode extends CrudCode {
 
 	/**
 	 * Finds the relation of the specified column.
+	 * Note: There's a similar method in the class GxActiveRecord.
 	 * @param string $modelClass The model class name.
 	 * @param CDbColumnSchema $column The column.
 	 * @return array The relation. The array will have 3 values:

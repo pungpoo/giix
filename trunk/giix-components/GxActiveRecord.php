@@ -37,6 +37,128 @@ abstract class GxActiveRecord extends CActiveRecord {
 	}
 
 	/**
+	 * The active record label.
+	 * The active record label is the user friendly name displayed in the views.
+	 * Each active record class should override this method and explicitly specify the label.
+	 * @param integer $n The number value. This is used to support plurals. Defaults to 1 (means singular).
+	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to false.
+	 * @return string The label.
+	 * @throws Exception If the method wasn't overriden.
+	 * @see getRelationLabel
+	 */
+	public static function label($n = 1, $ucwords = false) {
+		throw new Exception(Yii::t('giix', 'This method should be overriden by the Active Record class.'));
+	}
+
+	/**
+	 * Returns the text label for the specified active record relation.
+	 * The active record relations labels are the user friendly names displayed in the views.
+	 * The label is generated using the related active record class label.
+	 * @param string $relationName The relation name.
+	 * This method supports chained relations in the form of "post.author.name".
+	 * The last name may be an attribute.
+	 * @param integer $n The number value. This is used to support plurals.
+	 * In the default implementation, when this argument is null, if the relation is BELONGS_TO or HAS_ONE, the singular form is returned.
+	 * If the relation is HAS_MANY or MANY_MANY, the plural form is returned.
+	 * If this argument is null and the relation is not one of the types listed above, the singular form is returned.
+	 * For most languages, 1 means singular and all other values mean plural.
+	 * Defaults to null.
+	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to false.
+	 * @param boolean $useRelationLabel Whether to use of the relation label instead of the attribute label. Defaults to true.
+	 * When true, if the specified relation name is an FK attribute, the related AR label will be used.
+	 * @return string The label.
+	 * @throws InvalidArgumentException If an attribute name is found and is not the last item in the relationName parameter.
+	 * @throws InvalidArgumentException If the relation or attribute name is not found.
+	 * @see label
+	 */
+	public function getRelationLabel($relationName, $n = null, $ucwords = false, $useRelationLabel = true) {
+		// Exploding the chained relation names.
+		$relNames = explode('.', $relationName);
+
+		// The item index.
+		$relIndex = 0;
+
+		// Initialize the data: everything starts with this object.
+		$relClassName = get_class($this);
+
+		// Walk through the chained relations.
+		foreach ($relNames as $relName) {
+			// Increments the item index.
+			$relIndex++;
+
+			// Get the relaetd static class.
+			$relStaticClass = self::model($relClassName);
+
+			// Get the relations for the current class.
+			$relations = $relStaticClass->relations();
+
+			// If there's no relation with the current name, it could be an attribute name.
+			if (!isset($relations[$relName])) {
+				$attributeNames = $relStaticClass->attributeNames();
+				if (in_array($relName, $attributeNames)) {
+					// It is an attribute name. It must be the last name.
+					if ($relIndex === count($relNames)) {
+						// If the attribute is a FK and $useRelationLabel is true, return the related AR label.
+						if ($useRelationLabel && (($relData = self::findRelation($relStaticClass, $relName)) !== null)) {
+							return self::model($relData[3])->label(1, $ucwords); // This will always be a BELONGS_TO.
+						} else {
+							// Or try to return the label from the defined labels.
+							// If there's no label for this attribute, generate one.
+							$labels = $relStaticClass->attributeLabels();
+							if (isset($labels[$relName]))
+								return $labels[$relName];
+							else
+								return $relStaticClass->generateAttributeLabel($relName);
+						}
+					} else {
+						// It is not the last item.
+						throw new InvalidArgumentException(Yii::t('giix', 'The attribute "{attribute}" cannot have relations or attributes.', array('{attribute}' => $relName)));
+					}
+				} else {
+					// It is neither a relation name nor an attribute name.
+					throw new InvalidArgumentException(Yii::t('giix', 'The relation or attribute "{relation}" was not found.', array('{relation}' => $relName)));
+				}
+			}
+
+			// Change the current class name: walk to the next relation.
+			$relClassName = $relations[$relName][1];
+		}
+
+		// Get the type of the last relation from the last but one class.
+		$relType = $relations[end($relNames)][0];
+
+		// Automatically apply the correct number if requested.
+		if ($n === null) {
+			switch ($relType) {
+				case self::HAS_MANY:
+				case self::MANY_MANY:
+					$n = 2;
+					break;
+				case self::BELONGS_TO:
+				case self::HAS_ONE:
+				default :
+					$n = 1;
+			}
+		}
+
+		// Get and return the label from the related AR.
+		return self::model($relClassName)->label($n, $ucwords);
+	}
+
+	/**
+	 * Returns the text label for the specified attribute.
+	 * Also supported: relations and chained relations in the form of "post.author.name".
+	 * This method just calls {@link getRelationLabel}.
+	 * @param string $attribute The attribute name.
+	 * @return string The attribute label.
+	 * @see CActiveRecord::getAttributeLabel.
+	 * @see getRelationLabel.
+	 */
+	public function getAttributeLabel($attribute) {
+		return $this->getRelationLabel($attribute);
+	}
+
+	/**
 	 * The specified column(s) is(are) the responsible for the
 	 * string representation of the model instance.
 	 * The column is used in the {@link __toString} default implementation.
@@ -523,6 +645,46 @@ abstract class GxActiveRecord extends CActiveRecord {
 			throw $ex;
 		}
 		return true;
+	}
+
+	/**
+	 * Finds the relation of the specified column.
+	 * @param string|GxActiveRecord $modelClass The model class name or a model instance.
+	 * @param string|CDbColumnSchema $column The column.
+	 * @return array The relation. The array will have 3 values:
+	 * 0: the relation name,
+	 * 1: the relation type (will always be GxActiveRecord::BELONGS_TO),
+	 * 2: the foreign key (will always be the specified column),
+	 * 3: the related active record class name.
+	 * Or null if no matching relation was found.
+	 */
+	public static function findRelation($modelClass, $column) {
+		if (is_string($modelClass))
+			$staticModelClass = self::model($modelClass);
+		else
+			$staticModelClass = self::model(get_class($modelClass));
+
+		if (is_string($column))
+			$column = $staticModelClass->getTableSchema()->getColumn($column);
+
+		if (!$column->isForeignKey)
+			return null;
+		
+		$relations = $staticModelClass->relations();
+		// Find the relation for this attribute.
+		foreach ($relations as $relationName => $relation) {
+			// For attributes on this model, relation must be BELONGS_TO.
+			if (($relation[0] === GxActiveRecord::BELONGS_TO) && ($relation[2] === $column->name)) {
+				return array(
+					$relationName, // the relation name
+					$relation[0], // the relation type
+					$relation[2], // the foreign key
+					$relation[1] // the related active record class name
+				);
+			}
+		}
+		// None found.
+		return null;
 	}
 
 }

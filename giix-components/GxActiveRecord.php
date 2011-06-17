@@ -42,6 +42,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Each active record class should override this method and explicitly specify the label.
 	 * See the documentation when overriding: http://www.yiiframework.com/doc/guide/1.1/en/topics.i18n#plural-forms-format
 	 * @param integer $n The number value. This is used to support plurals. Defaults to 1 (means singular).
+	 * Notice that this number doesn't necessarily corresponds to the number (count) of items.
 	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to false.
 	 * @return string The label.
 	 * @throws Exception If the method wasn't overriden.

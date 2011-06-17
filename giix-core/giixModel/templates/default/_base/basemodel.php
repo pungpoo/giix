@@ -68,6 +68,11 @@ abstract class <?php echo $this->baseModelClass; ?> extends <?php echo $this->ba
 		return '<?php echo $tableName; ?>';
 	}
 
+	public static function label($n = 1, $ucwords = true) {
+		$label = Yii::t('app', '<?php echo strtolower($modelClass); ?>|<?php echo $this->pluralize(strtolower($modelClass)); ?>', $n);
+		return ($ucwords === true) ? ucwords($label) : $label;
+	}
+
 	public static function representingColumn() {
 <?php if (is_array($representingColumn)): ?>
 		return array(

@@ -128,11 +128,11 @@ abstract class GxActiveRecord extends CActiveRecord {
 			$relClassName = $relations[$relName][1];
 		}
 
-		// Get the type of the last relation from the last but one class.
-		$relType = $relations[end($relNames)][0];
-
 		// Automatically apply the correct number if requested.
 		if ($n === null) {
+			// Get the type of the last relation from the last but one class.
+			$relType = $relations[end($relNames)][0];
+
 			switch ($relType) {
 				case self::HAS_MANY:
 				case self::MANY_MANY:
@@ -673,7 +673,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 
 		if (!$column->isForeignKey)
 			return null;
-		
+
 		$relations = $staticModelClass->relations();
 		// Find the relation for this attribute.
 		foreach ($relations as $relationName => $relation) {

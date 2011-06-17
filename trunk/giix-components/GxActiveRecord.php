@@ -43,12 +43,12 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * See the documentation when overriding: http://www.yiiframework.com/doc/guide/1.1/en/topics.i18n#plural-forms-format
 	 * @param integer $n The number value. This is used to support plurals. Defaults to 1 (means singular).
 	 * Notice that this number doesn't necessarily corresponds to the number (count) of items.
-	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to false.
+	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to true.
 	 * @return string The label.
 	 * @throws Exception If the method wasn't overriden.
 	 * @see getRelationLabel
 	 */
-	public static function label($n = 1, $ucwords = false) {
+	public static function label($n = 1, $ucwords = true) {
 		throw new Exception(Yii::t('giix', 'This method should be overriden by the Active Record class.'));
 	}
 
@@ -66,7 +66,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * For most languages, 1 means singular and all other values mean plural.
 	 * Defaults to null.
 	 * It is not supported when returning labels for attributes.
-	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to false.
+	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to true.
 	 * @param boolean $useRelationLabel Whether to use of the relation label instead of the attribute label. Defaults to true.
 	 * When true, if the specified relation name is an FK attribute, the related AR label will be used.
 	 * @return string The label.
@@ -74,7 +74,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @throws InvalidArgumentException If the relation or attribute name is not found.
 	 * @see label
 	 */
-	public function getRelationLabel($relationName, $n = null, $ucwords = false, $useRelationLabel = true) {
+	public function getRelationLabel($relationName, $n = null, $ucwords = true, $useRelationLabel = true) {
 		// Exploding the chained relation names.
 		$relNames = explode('.', $relationName);
 

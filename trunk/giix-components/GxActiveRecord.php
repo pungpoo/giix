@@ -383,8 +383,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 
 	/**
 	 * Saves the MANY_MANY relations of this record.
-	 * Internally used by {@link saveWithRelated}.
-	 * See {@link saveWithRelated} for details.
+	 * Internally used by {@link saveWithRelated} and {@link saveMultiple}.
+	 * See {@link saveWithRelated} and {@link saveMultiple} for details.
 	 * @param array $relatedData The relation data in the format returned by {@link GxController::getRelatedData}.
 	 * @param boolean $runValidation Whether to perform validation before saving the record.
 	 * @param boolean $batch Whether to try to do the deletes and inserts in batch.
@@ -392,6 +392,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Batch is only supported for deletes.
 	 * @return boolean Whether the saving succeeds.
 	 * @see {@link saveWithRelated}.
+	 * @see {@link saveMultiple}.
 	 * @throws CDbException If this record is new.
 	 */
 	protected function saveRelated($relatedData, $runValidation = true, $batch = true) {

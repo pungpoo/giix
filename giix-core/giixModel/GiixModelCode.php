@@ -151,10 +151,12 @@ class GiixModelCode extends ModelCode {
 
 	/**
 	 * Selects the representing column of the table.
-	 * This field will be the responsible for the string representation of
-	 * the model instance.
-	 * @param CDbTableSchema $table a table definition.
-	 * @return string|array the name of the column as a string or the names of the columns as an array.
+	 * The "representingColumn" method is the responsible for the
+	 * string representation of the model instance.
+	 * @param CDbTableSchema $table The table definition.
+	 * @return string|array The name of the column as a string or the names of the columns as an array.
+	 * @see GxActiveRecord::representingColumn
+	 * @see GxActiveRecord::__toString
 	 */
 	protected function getRepresentingColumn($table) {
 		$columns = $table->columns;

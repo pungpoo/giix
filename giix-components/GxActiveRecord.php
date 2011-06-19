@@ -169,7 +169,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * string representation by overriding this method.
 	 * This method must be overriden in each model class
 	 * that extends this class.
-	 * @return string|array the name of the representing column for the table (string) or
+	 * @return string|array The name of the representing column for the table (string) or
 	 * the names of the representing columns (array).
 	 * @see __toString
 	 */
@@ -185,7 +185,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * When you overwrite this method, all model attributes used to build
 	 * the string representation of the model must be specified in
 	 * {@link representingColumn}.
-	 * @return string the string representation for the model instance.
+	 * @return string The string representation for the model instance.
+	 * @see representingColumn
 	 */
 	public function __toString() {
 		$representingColumn = $this->representingColumn();
@@ -218,12 +219,12 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * <li>Detects and selects the representing column.</li>
 	 * <li>Detects and selects the PK attribute.</li>
 	 * </ul>
-	 * @param string|array $attributes the names of the attributes to be selected.
+	 * @param string|array $attributes The names of the attributes to be selected.
 	 * Optional. If not specified, the {@link representingColumn} will be used.
-	 * @param boolean $withPk specifies if the primary keys will be selected.
-	 * @param mixed $condition query condition or criteria.
-	 * @param array $params parameters to be bound to an SQL statement.
-	 * @return array list of active records satisfying the specified condition. An empty array is returned if none is found.
+	 * @param boolean $withPk Specifies if the primary keys will be selected.
+	 * @param mixed $condition Query condition or criteria.
+	 * @param array $params Parameters to be bound to an SQL statement.
+	 * @return array List of active records satisfying the specified condition. An empty array is returned if none is found.
 	 */
 	public function findAllAttributes($attributes = null, $withPk = false, $condition='', $params=array()) {
 		$criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
@@ -243,11 +244,11 @@ abstract class GxActiveRecord extends CActiveRecord {
 
 	/**
 	 * Extracts and returns only the primary keys values from each model.
-	 * @param GxActiveRecord|array $model a model or an array of models.
-	 * @param boolean $forceString whether pk values on composite pk tables
+	 * @param GxActiveRecord|array $model A model or an array of models.
+	 * @param boolean $forceString Whether pk values on composite pk tables
 	 * should be compressed into a string. The values on the string will by
-	 * separated by {@link $pkSeparator}.
-	 * @return string|array the pk value as a string (for single pk tables) or
+	 * separated by {@link pkSeparator}.
+	 * @return string|array The pk value as a string (for single pk tables) or
 	 * array (for composite pk tables) if one model was specified or
 	 * an array of strings or arrays if multiple models were specified.
 	 */

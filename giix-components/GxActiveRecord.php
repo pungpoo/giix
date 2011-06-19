@@ -89,7 +89,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 			// Increments the item index.
 			$relIndex++;
 
-			// Get the relaetd static class.
+			// Get the related static class.
 			$relStaticClass = self::model($relClassName);
 
 			// Get the relations for the current class.

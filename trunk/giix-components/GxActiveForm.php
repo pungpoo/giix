@@ -25,7 +25,7 @@ class GxActiveForm extends CActiveForm {
 	 * <ul>
 	 * <li>Uses GxHtml.</li>
 	 * </ul>
-	 * @see {@link CActiveForm::checkBoxList} for more information.
+	 * @see CActiveForm::checkBoxList
 	 * @param CModel $model The data model.
 	 * @param string $attribute The attribute.
 	 * @param array $data Value-label pairs used to generate the check box list.

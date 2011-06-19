@@ -29,7 +29,7 @@ class GxHtml extends CHtml {
 	 * need to change the generated code accordingly or use
 	 * GxController::getRelatedData with the appropriate 'uncheckValue'.
 	 * If you set it to null, you will have to handle it manually.
-	 * @see {@link CHtml::activeCheckBoxList} for more information.
+	 * @see CHtml::activeCheckBoxList
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
 	 * @param array $data value-label pairs used to generate the check box list.
@@ -65,7 +65,7 @@ class GxHtml extends CHtml {
 	 * <li>This method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()}.</li>
 	 * <li>This method supports tables with composite primary keys.</li>
 	 * </ul>
-	 * @see {@link CHtml::listData} for more information.
+	 * @see CHtml::listData
 	 * @param array $models a list of model objects. Starting from version 1.0.3, this parameter
 	 * can also be an array of associative arrays (e.g. results of {@link CDbCommand::queryAll}).
 	 * @param string $valueField the attribute name for list option values.
@@ -130,7 +130,7 @@ class GxHtml extends CHtml {
 	 * <ul>
 	 * <li>This method supports {@link GxActiveRecord::representingColumn()} and {@link GxActiveRecord::toString()}.</li>
 	 * </ul>
-	 * @see {@link CHtml::value} for more information.
+	 * @see CHtml::value
 	 * @param mixed $model the model. This can be either an object or an array.
 	 * @param string $attribute the attribute name (use dot to concatenate multiple attributes).
 	 * Optional. If not specified, the {@link GxActiveRecord::__toString()} method will be used.
@@ -156,7 +156,7 @@ class GxHtml extends CHtml {
 	 * <ul>
 	 * <li>This method supports encoding strings in arrays and selective encoding of keys and/or values.</li>
 	 * </ul>
-	 * @see {@link CHtml::encode} for more information.
+	 * @see CHtml::encode
 	 * @param string|array $data data to be encoded
 	 * @param boolean $encodeKeys whether to encode array keys
 	 * @param boolean $encodeValues whether to encode array values

@@ -76,7 +76,7 @@ abstract class GxController extends Controller {
 	 * ideally part of or multiple unique keys).
 	 * @param string $modelClass The model class name.
 	 * @return GxActiveRecord The loaded model.
-	 * @see {@link GxActiveRecord::pkSeparator}.
+	 * @see GxActiveRecord::pkSeparator
 	 * @throws CHttpException if there's an invalid request (with code 400) or if the model is not found (with code 404).
 	 */
 	public function loadModel($key, $modelClass) {
@@ -182,7 +182,7 @@ abstract class GxController extends Controller {
 	 * </pre>
 	 * An empty array is returned in case there is no related pk data from the post.
 	 * This data comes directly from the form POST data.
-	 * @see {@link GxHtml::activeCheckBoxList}.
+	 * @see GxHtml::activeCheckBoxList
 	 * @throws InvalidArgumentException If uncheckValue is null.
 	 */
 	protected function getRelatedData($form, $relations, $uncheckValue = '') {

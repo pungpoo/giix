@@ -155,8 +155,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * This method just calls {@link getRelationLabel}.
 	 * @param string $attribute The attribute name.
 	 * @return string The attribute label.
-	 * @see CActiveRecord::getAttributeLabel.
-	 * @see getRelationLabel.
+	 * @see CActiveRecord::getAttributeLabel
+	 * @see getRelationLabel
 	 */
 	public function getAttributeLabel($attribute) {
 		return $this->getRelationLabel($attribute);
@@ -172,7 +172,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * that extends this class.
 	 * @return string|array the name of the representing column for the table (string) or
 	 * the names of the representing columns (array).
-	 * @see {@link __toString}.
+	 * @see __toString
 	 */
 	public static function representingColumn() {
 		return null;
@@ -278,7 +278,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * The method supports single PK also.
 	 * @param mixed $pk The PK value or array of PK values.
 	 * @return array The array of PK values, indexed by column name.
-	 * {@see CActiveRecord::findByPk}
+	 * @see CActiveRecord::findByPk
 	 * @throws InvalidArgumentException If the count of values doesn't match the
 	 * count of columns in the composite PK.
 	 */
@@ -329,7 +329,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Batch is only supported for deletes.</li>
 	 * </ul>
 	 * @return boolean Whether the saving succeeds.
-	 * @see {@link pivotModels}.
+	 * @see pivotModels
 	 */
 	public function saveWithRelated($relatedData, $runValidation = true, $attributes = null, $options = array()) {
 		// Merge the specified options with the default options.
@@ -391,8 +391,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * While batches may be faster, using active record instances provides better control, validation, event support etc.
 	 * Batch is only supported for deletes.
 	 * @return boolean Whether the saving succeeds.
-	 * @see {@link saveWithRelated}.
-	 * @see {@link saveMultiple}.
+	 * @see saveWithRelated
+	 * @see saveMultiple
 	 * @throws CDbException If this record is new.
 	 * @throws Exception If this active record has composite PK.
 	 */
@@ -543,8 +543,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * </ul>
 	 * @return boolean Whether the saving succeeds.
 	 * @throws Exception If "detectRelations" is true and the related model is not found.
-	 * @see {@link CActiveRecord::save}.
-	 * @see {@link saveWithRelated}.
+	 * @see CActiveRecord::save
+	 * @see saveWithRelated
 	 */
 	public static function saveMultiple($models, $runValidation = true, $options = array()) {
 		// Merge the specified options with the default options.

@@ -80,6 +80,10 @@ abstract class GxController extends Controller {
 	 * @throws CHttpException if there's an invalid request or if the model is not found.
 	 */
 	public function loadModel($key, $modelClass) {
+
+		// Get the static model.
+		$staticModel = GxActiveRecord::model($modelClass);
+
 		if (is_array($key)) {
 			// The key is an array.
 			// Check if there are column names indexing the values in the array.
@@ -92,7 +96,7 @@ abstract class GxController extends Controller {
 
 				// Now we will use the composite PK.
 				// Check if the table has composite PK.
-				$tablePk = GxActiveRecord::model($modelClass)->getTableSchema()->primaryKey;
+				$tablePk = $staticModel->getTableSchema()->primaryKey;
 				if (!is_array($tablePk))
 					throw new CHttpException(400, Yii::t('giix', 'Your request is invalid.'));
 
@@ -101,19 +105,19 @@ abstract class GxController extends Controller {
 					throw new CHttpException(400, Yii::t('giix', 'Your request is invalid.'));
 
 				// Get an array of PK values indexed by the column names.
-				$pk = GxActiveRecord::model($modelClass)->fillPkColumnNames($key);
+				$pk = $staticModel->fillPkColumnNames($key);
 
 				// Then load the model.
-				$model = GxActiveRecord::model($modelClass)->findByPk($pk);
+				$model = $staticModel->findByPk($pk);
 			} else {
 				// There are attribute names.
 				// Then we load the model now.
-				$model = GxActiveRecord::model($modelClass)->findByAttributes($key);
+				$model = $staticModel->findByAttributes($key);
 			}
 		} else {
 			// The key is not an array.
 			// Check if the table has composite PK.
-			$tablePk = GxActiveRecord::model($modelClass)->getTableSchema()->primaryKey;
+			$tablePk = $staticModel->getTableSchema()->primaryKey;
 			if (is_array($tablePk)) {
 				// The table has a composite PK.
 				// The key must be a string to have a PK separator.
@@ -132,7 +136,7 @@ abstract class GxController extends Controller {
 			} else {
 				// The table has a single PK.
 				// Then we load the model now.
-				$model = GxActiveRecord::model($modelClass)->findByPk($key);
+				$model = $staticModel->findByPk($key);
 			}
 		}
 

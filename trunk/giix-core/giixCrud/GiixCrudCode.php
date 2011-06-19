@@ -120,7 +120,7 @@ class GiixCrudCode extends CrudCode {
 	 * the model relation.
 	 * @param string $modelClass The model class name.
 	 * @param array $relation The relation details in the same format
-	 * used by {@link getRelations()}.
+	 * used by {@link getRelations}.
 	 * @return string The source code line for the relation field.
 	 * @throws InvalidArgumentException If the relation type is not HAS_ONE, HAS_MANY or MANY_MANY.
 	 */

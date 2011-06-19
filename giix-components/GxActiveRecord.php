@@ -605,7 +605,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 									// We take the related model class name.
 									$relatedClassName = $relationData[1];
 									// And look for it in the array of the already saved models.
-									if (array_key_exists($relatedClassName, $savedModels)) {
+									if (isset($savedModels[$relatedClassName])) {
 										// We assume that this is the related model and
 										// we assume that the relation is to the PK.
 										$model->$fkName = $savedModels[$relatedClassName]->getPrimaryKey();

@@ -21,7 +21,7 @@
  * property or method in class "<?php echo $modelClass; ?>".
  *
  * Columns in table "<?php echo $tableName; ?>" available as properties of the model,
-<?php if(count($relations)>0): ?>
+<?php if(!empty($relations)): ?>
  * followed by relations of table "<?php echo $tableName; ?>" available as properties of the model.
 <?php else: ?>
  * and there are no model relations.

@@ -77,7 +77,7 @@ abstract class GxController extends Controller {
 	 * @param string $modelClass The model class name.
 	 * @return GxActiveRecord The loaded model.
 	 * @see {@link GxActiveRecord::pkSeparator}.
-	 * @throws CHttpException if there's an invalid request or if the model is not found.
+	 * @throws CHttpException if there's an invalid request (with code 400) or if the model is not found (with code 404).
 	 */
 	public function loadModel($key, $modelClass) {
 

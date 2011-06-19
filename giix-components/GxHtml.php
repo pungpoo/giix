@@ -162,6 +162,7 @@ class GxHtml extends CHtml {
 	 * @param boolean $encodeValues whether to encode array values
 	 * @param boolean $recursive whether to encode data in nested arrays
 	 * @return string|array the encoded data
+	 * @throws InvalidArgumentException If the argument "data" type is not string or array.
 	 */
 	public static function encodeEx($data, $encodeKeys = false, $encodeValues = false, $recursive = true) {
 		if (is_array($data)) {

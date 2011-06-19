@@ -33,6 +33,9 @@ class GxCoreHelper {
 	 * @param integer $indent the base indentation (as number of tabstops) for the generated source in each new line.
 	 * Note that the first line will not receive indentation.
 	 * @return string the PHP source code representation of the array.
+	 * @throws InvalidArgumentException If an array key type is not supported.
+	 * @throws InvalidArgumentException If an array value is an object.
+	 * @throws InvalidArgumentException If an array value type is not supported.
 	 */
 	public static function ArrayToPhpSource($array, $indent = 1, $empty = 'array()') {
 		if (empty($array))

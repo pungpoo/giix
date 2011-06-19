@@ -279,7 +279,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @param mixed $pk The PK value or array of PK values.
 	 * @return array The array of PK values, indexed by column name.
 	 * {@see CActiveRecord::findByPk}
-	 * @throws InvalidArgumentException if the count of values doesn't match the
+	 * @throws InvalidArgumentException If the count of values doesn't match the
 	 * count of columns in the composite PK.
 	 */
 	public function fillPkColumnNames($pk) {
@@ -394,6 +394,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @see {@link saveWithRelated}.
 	 * @see {@link saveMultiple}.
 	 * @throws CDbException If this record is new.
+	 * @throws Exception If this active record has composite PK.
 	 */
 	protected function saveRelated($relatedData, $runValidation = true, $batch = true) {
 		if (empty($relatedData))
@@ -541,6 +542,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Defaults to false.</li>
 	 * </ul>
 	 * @return boolean Whether the saving succeeds.
+	 * @throws Exception If "detectRelations" is true and the related model is not found.
 	 * @see {@link CActiveRecord::save}.
 	 * @see {@link saveWithRelated}.
 	 */

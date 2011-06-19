@@ -123,6 +123,7 @@ class GiixCrudCode extends CrudCode {
 	 * @param array $relation The relation details in the same format
 	 * used by {@link getRelations()}.
 	 * @return string The source code line for the relation field.
+	 * @throws InvalidArgumentException If the relation type is not HAS_ONE, HAS_MANY or MANY_MANY.
 	 */
 	public function generateActiveRelationField($modelClass, $relation) {
 		$relationName = $relation[0];

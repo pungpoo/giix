@@ -586,7 +586,9 @@ abstract class GxActiveRecord extends CActiveRecord {
 					$modelOptions = array_merge($defaultModelOptions, $modelItem['modelOptions']);
 				else
 					$modelOptions = $defaultModelOptions;
-				$modelOptions['runValidation'] = ($runValidation === null) ? $modelOptions['runValidation'] : $runValidation;
+				// If set, the global "runValidation" value overrides the model setting.
+				if ($runValidation !== null)
+					$modelOptions['runValidation'] = $runValidation;
 
 				// Detect automatically the new active record and fill in the data for its FK.
 				if ($options['detectRelations']) {

@@ -13,7 +13,6 @@
  * GxHtml extends CHtml and provides additional features.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @since 1.0
  */
 class GxHtml extends CHtml {
 

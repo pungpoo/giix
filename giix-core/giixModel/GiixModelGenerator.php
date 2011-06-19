@@ -13,7 +13,6 @@
  * GiixModelGenerator is the controller for giix model generator.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @since 1.0
  */
 class GiixModelGenerator extends CCodeGenerator {
 

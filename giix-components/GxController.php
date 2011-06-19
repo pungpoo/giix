@@ -13,7 +13,6 @@
  * GxController is the base class for the generated controllers.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @since 1.0
  */
 abstract class GxController extends Controller {
 

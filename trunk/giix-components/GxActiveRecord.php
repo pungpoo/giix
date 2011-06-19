@@ -13,7 +13,6 @@
  * GxActiveRecord is the base class for the generated AR (base) models.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @since 1.0
  */
 abstract class GxActiveRecord extends CActiveRecord {
 

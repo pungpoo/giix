@@ -13,7 +13,6 @@
  * GxCoreHelper is a static class that provides a collection of helper methods for code generation.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @since 1.0
  */
 class GxCoreHelper {
 

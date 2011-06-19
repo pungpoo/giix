@@ -13,7 +13,6 @@
  * GiixCrudGenerator is the controller for giix crud generator..
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @since 1.0
  */
 class GiixCrudGenerator extends CCodeGenerator {
 

@@ -18,6 +18,9 @@ General upgrade intructions
 - Check the requirements of the new version in the README file.
 - Then follow the install instructions for the new release.
 
+Upgrading from 1.8
+---------------------
+
 Upgrading from 1.7
 ---------------------
 You must implement the "label" method on each AR that extends from GxActiveRecord.

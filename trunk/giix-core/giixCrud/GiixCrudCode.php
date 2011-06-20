@@ -174,7 +174,7 @@ class GiixCrudCode extends CrudCode {
 			$relatedControllerName = strtolower($relatedModelClass[0]) . substr($relatedModelClass, 1);
 
 			return "array(
-			'label' => '{$relatedModelClass}',
+			'name' => '{$relationName}',
 			'type' => 'raw',
 			'value' => \$model->{$relationName} !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx(\$model->{$relationName})), array('{$relatedControllerName}/view', 'id' => GxActiveRecord::extractPkValue(\$model->{$relationName}, true))) : null,
 			)";

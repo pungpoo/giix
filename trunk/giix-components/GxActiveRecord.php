@@ -191,11 +191,13 @@ abstract class GxActiveRecord extends CActiveRecord {
 	public function __toString() {
 		$representingColumn = $this->representingColumn();
 
-		if (($representingColumn === null) || (is_array($representingColumn) && ($representingColumn === array())))
-			if ($this->getTableSchema()->primaryKey !== null)
+		if (($representingColumn === null) || ($representingColumn === array()))
+			if ($this->getTableSchema()->primaryKey !== null) {
 				$representingColumn = $this->getTableSchema()->primaryKey;
-			else
-				$representingColumn=$this->getTableSchema()->columnNames[0];
+			} else {
+				$columnNames = $this->getTableSchema()->getColumnNames();
+				$representingColumn = $columnNames[0];
+			}
 
 		if (is_array($representingColumn)) {
 			$part = '';
@@ -231,7 +233,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 		if ($attributes === null)
 			$attributes = $this->representingColumn();
 		if ($withPk) {
-			$pks = self::model(get_class($this))->tableSchema->primaryKey;
+			$pks = self::model(get_class($this))->getTableSchema()->primaryKey;
 			if (!is_array($pks))
 				$pks = array($pks);
 			if (!is_array($attributes))
@@ -256,7 +258,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 		if ($model === null)
 			return null;
 		if (!is_array($model)) {
-			$pk = $model->primaryKey;
+			$pk = $model->getPrimaryKey();
 			if ($forceString && is_array($pk))
 				$pk = implode(self::$pkSeparator, $pk);
 			return $pk;
@@ -346,9 +348,9 @@ abstract class GxActiveRecord extends CActiveRecord {
 
 		try {
 			// Start the transaction if required.
-			if ($options['withTransaction'] && ($this->dbConnection->currentTransaction === null)) {
+			if ($options['withTransaction'] && ($this->getDbConnection()->getCurrentTransaction() === null)) {
 				$transacted = true;
-				$transaction = $this->dbConnection->beginTransaction();
+				$transaction = $this->getDbConnection()->beginTransaction();
 			} else
 				$transacted = false;
 
@@ -419,7 +421,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 				$relatedFkName = $matches[3];
 			}
 			// Get the primary key value of the main model.
-			$thisPkValue = $this->primaryKey;
+			$thisPkValue = $this->getPrimaryKey();
 			if (is_array($thisPkValue))
 				throw new Exception(Yii::t('giix', 'Composite primary keys are not supported.'));
 			// Get the current related models of this relation and map the current related primary keys.
@@ -485,7 +487,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 			// Insert the new data.
 			foreach ($insertMap as $value) {
 				$pivotModel = new $pivotClassName();
-				$pivotModel->attributes = $value;
+				$pivotModel->setAttributes($value);
 				if (!$pivotModel->save($runValidation)) {
 					if ($transacted)
 						$transaction->rollback();
@@ -575,9 +577,9 @@ abstract class GxActiveRecord extends CActiveRecord {
 
 		try {
 			// Start the transaction if required.
-			if ($options['withTransaction'] && ($this->dbConnection->currentTransaction === null)) {
+			if ($options['withTransaction'] && ($this->getDbConnection()->getCurrentTransaction() === null)) {
 				$transacted = true;
-				$transaction = $this->dbConnection->beginTransaction();
+				$transaction = $this->getDbConnection()->beginTransaction();
 			} else
 				$transacted = false;
 

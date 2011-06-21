@@ -3,6 +3,7 @@ giix Change Log
 
 Version 1.9, to be released
 ----------------------------
+Bug: GxActiveRecord::getRelationLabel supported only relations and (table-based) attributes. Support for class properties has been added.
 
 Version 1.8, 2011-06-20
 ----------------------------

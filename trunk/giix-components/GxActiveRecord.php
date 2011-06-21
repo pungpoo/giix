@@ -70,7 +70,6 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * When true, if the specified relation name is an FK attribute, the related AR label will be used.
 	 * @return string The label.
 	 * @throws InvalidArgumentException If an attribute name is found and is not the last item in the relationName parameter.
-	 * @throws InvalidArgumentException If the relation or attribute name is not found.
 	 * @see label
 	 */
 	public function getRelationLabel($relationName, $n = null, $ucwords = true, $useRelationLabel = true) {
@@ -94,32 +93,30 @@ abstract class GxActiveRecord extends CActiveRecord {
 			// Get the relations for the current class.
 			$relations = $relStaticClass->relations();
 
-			// If there's no relation with the current name, it could be an attribute name.
+			// Check if there is (not) a relation with the current name.
 			if (!isset($relations[$relName])) {
-				$attributeNames = $relStaticClass->attributeNames();
-				if (in_array($relName, $attributeNames)) {
-					// It is an attribute name. It must be the last name.
-					if ($relIndex === count($relNames)) {
-						// If the attribute is a FK and $useRelationLabel is true, return the related AR label.
-						if ($useRelationLabel && (($relData = self::findRelation($relStaticClass, $relName)) !== null)) {
-							return self::model($relData[3])->label(1, $ucwords); // This will always be a BELONGS_TO.
-						} else {
-							// Or try to return the label from the defined labels.
-							// If there's no label for this attribute, generate one.
-							$labels = $relStaticClass->attributeLabels();
-							if (isset($labels[$relName]))
-								$label = $labels[$relName];
-							else
-								$label = $relStaticClass->generateAttributeLabel($relName);
-							return ($ucwords === true) ? ucwords($label) : $label;
-						}
+				// There is no relation with the current name. It is an attribute or a property.
+				// It must be the last name.
+				if ($relIndex === count($relNames)) {
+					// Check if it is an attribute.
+					$attributeNames = $relStaticClass->attributeNames();
+					$isAttribute = in_array($relName, $attributeNames);
+					// If it is an attribute and the attribute is a FK and $useRelationLabel is true, return the related AR label.
+					if ($isAttribute && $useRelationLabel && (($relData = self::findRelation($relStaticClass, $relName)) !== null)) {
+						return self::model($relData[3])->label(1, $ucwords); // This will always be a BELONGS_TO.
 					} else {
-						// It is not the last item.
-						throw new InvalidArgumentException(Yii::t('giix', 'The attribute "{attribute}" cannot have relations or attributes.', array('{attribute}' => $relName)));
+						// Or try to return the label from the defined labels.
+						// If there's no label for this attribute, generate one.
+						$labels = $relStaticClass->attributeLabels();
+						if (isset($labels[$relName]))
+							$label = $labels[$relName];
+						else
+							$label = $relStaticClass->generateAttributeLabel($relName);
+						return ($ucwords === true) ? ucwords($label) : $label;
 					}
 				} else {
-					// It is neither a relation name nor an attribute name.
-					throw new InvalidArgumentException(Yii::t('giix', 'The relation or attribute "{relation}" was not found.', array('{relation}' => $relName)));
+					// It is not the last item.
+					throw new InvalidArgumentException(Yii::t('giix', 'The attribute "{attribute}" cannot have relations or attributes.', array('{attribute}' => $relName)));
 				}
 			}
 

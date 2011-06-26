@@ -86,7 +86,7 @@ class GiixModelCode extends ModelCode {
 				'tableName' => $schema === '' ? $tableName : $schema . '.' . $tableName,
 				'modelClass' => $className,
 				'columns' => $table->columns,
-				'labels' => $this->generateLabels($table),
+				'labels' => $this->generateLabelsEx($table, $className),
 				'rules' => $this->generateRules($table),
 				'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
 				'representingColumn' => $this->getRepresentingColumn($table), // The representing column for the table.
@@ -122,6 +122,45 @@ class GiixModelCode extends ModelCode {
 			'model.php',
 			'_base' . DIRECTORY_SEPARATOR . 'basemodel.php',
 		);
+	}
+
+	/**
+	 * Generates the labels for the table fields and relations.
+	 * #MethodTracker
+	 * This method is based on {@link ModelCode::generateLabels}, from version 1.1.7 (r3135). Changes:
+	 * <ul>
+	 * <li>Default label for FKs is null (this will cause them to be represented by the related model label).</li>
+	 * <li>Creates entries for the relations. The default label is null, see above.</li>
+	 * </ul>
+	 * @param CDbTableSchema $table The table definition.
+	 * @param string $className The class name.
+	 * @return array The labels.
+	 */
+	public function generateLabelsEx($table, $className) {
+		$labels = array();
+		// For the fields.
+		foreach ($table->columns as $column) {
+			if ($column->isForeignKey) {
+				$label = null;
+			} else {
+				$label = ucwords(trim(strtolower(str_replace(array('-', '_'), ' ', preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $column->name)))));
+				$label = preg_replace('/\s+/', ' ', $label);
+
+				if (strcasecmp(substr($label, -3), ' id') === 0)
+					$label = substr($label, 0, -3);
+				if ($label === 'Id')
+					$label = 'ID';
+			}
+			$labels[$column->name] = $label;
+		}
+		// For the relations.
+		if (isset($this->relations[$className])) {
+			foreach (array_keys($this->relations[$className]) as $relationName) {
+				$labels[$relationName] = null;
+			}
+		}
+
+		return $labels;
 	}
 
 	/**

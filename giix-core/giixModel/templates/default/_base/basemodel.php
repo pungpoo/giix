@@ -113,7 +113,11 @@ abstract class <?php echo $this->baseModelClass; ?> extends <?php echo $this->ba
 	public function attributeLabels() {
 		return array(
 <?php foreach($labels as $name=>$label): ?>
+<?php if($label === null): ?>
+			<?php echo "'{$name}' => null,\n"; ?>
+<?php else: ?>
 			<?php echo "'{$name}' => Yii::t('app', '{$label}'),\n"; ?>
+<?php endif; ?>
 <?php endforeach; ?>
 		);
 	}

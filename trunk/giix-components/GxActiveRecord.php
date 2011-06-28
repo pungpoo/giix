@@ -64,14 +64,13 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * For most languages, 1 means singular and all other values mean plural.
 	 * Defaults to null.
 	 * It is not supported when returning labels for attributes.
-	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to true.
 	 * @param boolean $useRelationLabel Whether to use of the relation label instead of the attribute label. Defaults to true.
 	 * When true, if the specified relation name is an FK attribute, the related AR label will be used.
 	 * @return string The label.
 	 * @throws InvalidArgumentException If an attribute name is found and is not the last item in the relationName parameter.
 	 * @see label
 	 */
-	public function getRelationLabel($relationName, $n = null, $ucwords = true, $useRelationLabel = true) {
+	public function getRelationLabel($relationName, $n = null, $useRelationLabel = true) {
 		// Exploding the chained relation names.
 		$relNames = explode('.', $relationName);
 
@@ -108,10 +107,9 @@ abstract class GxActiveRecord extends CActiveRecord {
 						// If there's no label for this attribute, generate one.
 						$labels = $relStaticClass->attributeLabels();
 						if (isset($labels[$relName]))
-							$label = $labels[$relName];
+							return $labels[$relName];
 						else
-							$label = $relStaticClass->generateAttributeLabel($relName);
-						return ($ucwords === true) ? ucwords($label) : $label;
+							return $relStaticClass->generateAttributeLabel($relName);
 					}
 				} else {
 					// It is not the last item.

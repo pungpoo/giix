@@ -116,7 +116,7 @@ abstract class <?php echo $this->baseModelClass; ?> extends <?php echo $this->ba
 <?php if($label === null): ?>
 			<?php echo "'{$name}' => null,\n"; ?>
 <?php else: ?>
-			<?php echo "'{$name}' => Yii::t('app', '{$label}'),\n"; ?>
+			<?php echo "'{$name}' => {$label},\n"; ?>
 <?php endif; ?>
 <?php endforeach; ?>
 		);

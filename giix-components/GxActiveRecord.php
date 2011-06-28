@@ -42,12 +42,11 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * See the documentation when overriding: http://www.yiiframework.com/doc/guide/1.1/en/topics.i18n#plural-forms-format
 	 * @param integer $n The number value. This is used to support plurals. Defaults to 1 (means singular).
 	 * Notice that this number doesn't necessarily corresponds to the number (count) of items.
-	 * @param boolean $ucwords Whether to capitalize the first letter in each word. Defaults to true.
 	 * @return string The label.
 	 * @throws Exception If the method wasn't overriden.
 	 * @see getRelationLabel
 	 */
-	public static function label($n = 1, $ucwords = true) {
+	public static function label($n = 1) {
 		throw new Exception(Yii::t('giix', 'This method should be overriden by the Active Record class.'));
 	}
 
@@ -103,7 +102,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 					$isAttribute = in_array($relName, $attributeNames);
 					// If it is an attribute and the attribute is a FK and $useRelationLabel is true, return the related AR label.
 					if ($isAttribute && $useRelationLabel && (($relData = self::findRelation($relStaticClass, $relName)) !== null)) {
-						return self::model($relData[3])->label(1, $ucwords); // This will always be a BELONGS_TO.
+						return self::model($relData[3])->label(1); // This will always be a BELONGS_TO.
 					} else {
 						// Or try to return the label from the defined labels.
 						// If there's no label for this attribute, generate one.
@@ -142,7 +141,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 		}
 
 		// Get and return the label from the related AR.
-		return self::model($relClassName)->label($n, $ucwords);
+		return self::model($relClassName)->label($n);
 	}
 
 	/**

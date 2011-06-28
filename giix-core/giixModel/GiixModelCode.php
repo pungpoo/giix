@@ -126,14 +126,15 @@ class GiixModelCode extends ModelCode {
 
 	/**
 	 * Generates the labels for the table fields and relations.
+	 * By default, the labels for the FK fields and for the relations come from the related model's label.
 	 * #MethodTracker
 	 * This method is based on {@link ModelCode::generateLabels}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
-	 * <li>Default label for FKs is null (this will cause them to be represented by the related model label).</li>
-	 * <li>Creates entries for the relations. The default label is null, see above.</li>
+	 * <li>Default label for FKs come from the related model's label.</li>
+	 * <li>Creates entries for the relations. The default label comes from the related model's label.</li>
 	 * </ul>
 	 * @param CDbTableSchema $table The table definition.
-	 * @param string $className The class name.
+	 * @param string $className The model class name.
 	 * @return array The labels.
 	 */
 	public function generateLabelsEx($table, $className) {
@@ -141,7 +142,7 @@ class GiixModelCode extends ModelCode {
 		// For the fields.
 		foreach ($table->columns as $column) {
 			if ($column->isForeignKey) {
-				$label = null;
+				$label = $this->findRelatedClass($className, $column) . '::label()';
 			} else {
 				$label = ucwords(trim(strtolower(str_replace(array('-', '_'), ' ', preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $column->name)))));
 				$label = preg_replace('/\s+/', ' ', $label);
@@ -150,13 +151,19 @@ class GiixModelCode extends ModelCode {
 					$label = substr($label, 0, -3);
 				if ($label === 'Id')
 					$label = 'ID';
+
+				$label = "Yii::t('app', '{$label}')";
 			}
 			$labels[$column->name] = $label;
 		}
 		// For the relations.
-		if (isset($this->relations[$className])) {
-			foreach (array_keys($this->relations[$className]) as $relationName) {
-				$labels[$relationName] = null;
+		$relations = $this->getRelationsData($className);
+		if (isset($relations)) {
+			foreach ($relations as $relationName => $relationData) {
+				if (($relationData[0] === GxActiveRecord::HAS_MANY) || ($relationData[0] === GxActiveRecord::MANY_MANY))
+					$labels[$relationName] = $relationData[1] . '::label(2)';
+				else
+					$labels[$relationName] = $relationData[1] . '::label()';
 			}
 		}
 
@@ -227,6 +234,121 @@ class GiixModelCode extends ModelCode {
 		}
 		// Then the first column.
 		return reset($columns)->name;
+	}
+
+	/**
+	 * Finds the related class of the specified column.
+	 * @param string $className The model class name.
+	 * @param CDbColumnSchema $column The column.
+	 * @return string The related class name. Or null if no matching relation was found.
+	 */
+	public function findRelatedClass($className, $column) {
+		if (!$column->isForeignKey)
+			return null;
+
+		$relations = $this->getRelationsData($className);
+
+		foreach ($relations as $relation) {
+			// Must be BELONGS_TO.
+			if (($relation[0] === GxActiveRecord::BELONGS_TO) && ($relation[3] === $column->name))
+				return $relation[1];
+		}
+		// None found.
+		return null;
+	}
+
+	/**
+	 * Finds the relation data for all the relations of the specified model class.
+	 * @param string $className The model class name.
+	 * @return array An array of arrays with the relation data.
+	 * The array will have one array for each relation.
+	 * The key is the relation name. There are 5 values:
+	 * 0: the relation type,
+	 * 1: the related active record class name,
+	 * 2: the joining (pivot) table (note: it may come with curly braces) (if the relation is a MANY_MANY, else null),
+	 * 3: the local FK (if the relation is a BELONGS_TO or a MANY_MANY, else null),
+	 * 4: the remote FK (if the relation is a HAS_ONE, a HAS_MANY or a MANY_MANY, else null).
+	 * Or null if the model has no relations.
+	 */
+	public function getRelationsData($className) {
+		if (!empty($this->relations))
+			$relations = $this->relations;
+		else
+			$relations = $this->generateRelations();
+
+		if (!isset($relations[$className]))
+			return null;
+
+		$result = array();
+		foreach ($relations[$className] as $relationName => $relationData) {
+			$result[$relationName] = $this->getRelationData($className, $relationName, $relations);
+		}
+		return $result;
+	}
+
+	/**
+	 * Finds the relation data of the specified relation name.
+	 * @param string $className The model class name.
+	 * @param string $relationName The relation name.
+	 * @param array $relations An array of relations for the models
+	 * in the format returned by {@link ModelCode::generateRelations}. Optional.
+	 * @return array The relation data. The array will have 3 values:
+	 * 0: the relation type,
+	 * 1: the related active record class name,
+	 * 2: the joining (pivot) table (note: it may come with curly braces) (if the relation is a MANY_MANY, else null),
+	 * 3: the local FK (if the relation is a BELONGS_TO or a MANY_MANY, else null),
+	 * 4: the remote FK (if the relation is a HAS_ONE, a HAS_MANY or a MANY_MANY, else null).
+	 * Or null if no matching relation was found.
+	 */
+	public function getRelationData($className, $relationName, $relations = array()) {
+		if (empty($relations)) {
+			if (!empty($this->relations))
+				$relations = $this->relations;
+			else
+				$relations = $this->generateRelations();
+		}
+		
+		if (isset($relations[$className]) && isset($relations[$className][$relationName]))
+			$relation = $relations[$className][$relationName];
+		else
+			return null;
+
+		$relationData = array();
+		if (preg_match("/^array\(([\w:]+?),\s?'(\w+)',\s?'([\w\s\(\),]+?)'\)$/", $relation, $matches_base)) {
+			$relationData[1] = $matches_base[2]; // the related active record class name
+
+			switch ($matches_base[1]) {
+				case 'self::BELONGS_TO':
+					$relationData[0] = GxActiveRecord::BELONGS_TO; // the relation type
+					$relationData[2] = null;
+					$relationData[3] = $matches_base[3]; // the local FK
+					$relationData[4] = null;
+					break;
+				case 'self::HAS_ONE':
+					$relationData[0] = GxActiveRecord::HAS_ONE; // the relation type
+					$relationData[2] = null;
+					$relationData[3] = null;
+					$relationData[4] = $matches_base[3]; // the remote FK
+					break;
+				case 'self::HAS_MANY':
+					$relationData[0] = GxActiveRecord::HAS_MANY; // the relation type
+					$relationData[2] = null;
+					$relationData[3] = null;
+					$relationData[4] = $matches_base[3]; // the remote FK
+					break;
+				case 'self::MANY_MANY':
+					if (preg_match("/^((?:{{)?\w+(?:}})?)\((\w+),\s?(\w+)\)$/", $matches_base[3], $matches_manymany)) {
+						$relationData[0] = GxActiveRecord::MANY_MANY; // the relation type
+						$relationData[2] = $matches_manymany[1]; // the joining (pivot) table
+						$relationData[3] = $matches_manymany[2]; // the local FK
+						$relationData[4] = $matches_manymany[3]; // the remote FK
+					}
+					break;
+			}
+
+			return $relationData;
+		} else
+			return null;
 	}
 
 	/**

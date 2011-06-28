@@ -21,7 +21,8 @@ General upgrade intructions
 Upgrading from 1.8
 ---------------------
 The method GxActiveRecord::label doesn't have the second parameter "ucwords" anymore. The same happens when it is overriden on the generated base model.
-You will have to check your code and fix any calls to the method that have the second parameter.
+You will need to remove the parameter from the method on your base models.
+You will have to check your code and fix any calls to the method that have the parameter.
 
 Upgrading from 1.7
 ---------------------

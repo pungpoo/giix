@@ -24,6 +24,9 @@ The method GxActiveRecord::label doesn't have the second parameter "ucwords" any
 You will need to remove the parameter from the method on your base models.
 You will have to check your code and fix any calls to the method that have the parameter.
 
+The method GxActiveRecord::getRelationLabel doesn't have the third parameter "ucwords" anymore.
+You will have to check your code and fix any calls to the method that have the parameter.
+
 Upgrading from 1.7
 ---------------------
 You must implement the "label" method on each AR that extends from GxActiveRecord.

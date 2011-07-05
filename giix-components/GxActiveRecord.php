@@ -51,21 +51,25 @@ abstract class GxActiveRecord extends CActiveRecord {
 	}
 
 	/**
-	 * Returns the text label for the specified active record relation.
-	 * The active record relations labels are the user friendly names displayed in the views.
-	 * The label is generated using the related active record class label.
-	 * @param string $relationName The relation name.
+	 * Returns the text label for the specified active record relation, attribute or class property.
+	 * The labels are the user friendly names displayed in the views.
+	 * If defined in the model, the label for its attribute, property or relation is returned.
+	 * If not defined in the model (in {@link CModel::attributeLabels}),
+	 * the label is generated using the related active record class label (via {@link GxActiveRecord::label}) (for FK attributes and relations)
+	 * or using {@link CModel::generateAttributeLabel} (for other attributes and class properties).
+	 * @param string $relationName The relation, attribute or class property name.
 	 * This method supports chained relations in the form of "post.author.name".
-	 * The last name may be an attribute.
 	 * @param integer $n The number value. This is used to support plurals.
 	 * In the default implementation, when this argument is null, if the relation is BELONGS_TO or HAS_ONE, the singular form is returned.
 	 * If the relation is HAS_MANY or MANY_MANY, the plural form is returned.
 	 * If this argument is null and the relation is not one of the types listed above, the singular form is returned.
 	 * For most languages, 1 means singular and all other values mean plural.
 	 * Defaults to null.
-	 * It is not supported when returning labels for attributes.
-	 * @param boolean $useRelationLabel Whether to use of the relation label instead of the attribute label. Defaults to true.
-	 * When true, if the specified relation name is an FK attribute, the related AR label will be used.
+	 * Note: It is not supported when returning labels for attributes or class properties.
+	 * @param boolean $useRelationLabel Whether to use the relation label for the FK attribute.
+	 * When true, if the specified attribute name is a FK, the corresponding related AR label will be used.
+	 * Defaults to true.
+	 * Note: this will only work when there is no label defined in {@link CModel::attributeLabels} for this attribute.
 	 * @return string The label.
 	 * @throws InvalidArgumentException If an attribute name is found and is not the last item in the relationName parameter.
 	 * @see label
@@ -74,11 +78,14 @@ abstract class GxActiveRecord extends CActiveRecord {
 		// Exploding the chained relation names.
 		$relNames = explode('.', $relationName);
 
+		// Everything starts with this object.
+		$relClassName = get_class($this);
+
 		// The item index.
 		$relIndex = 0;
 
-		// Initialize the data: everything starts with this object.
-		$relClassName = get_class($this);
+		// Get the count of relation names;
+		$countRelNames = count($relNames);
 
 		// Walk through the chained relations.
 		foreach ($relNames as $relName) {
@@ -88,6 +95,13 @@ abstract class GxActiveRecord extends CActiveRecord {
 			// Get the related static class.
 			$relStaticClass = self::model($relClassName);
 
+			// If is is the last name and the label is explicitly defined, return it.
+			if ($relIndex === $countRelNames) {
+				$labels = $relStaticClass->attributeLabels();
+				if (isset($labels[$relName]))
+					return $labels[$relName];
+			}
+
 			// Get the relations for the current class.
 			$relations = $relStaticClass->relations();
 
@@ -95,25 +109,21 @@ abstract class GxActiveRecord extends CActiveRecord {
 			if (!isset($relations[$relName])) {
 				// There is no relation with the current name. It is an attribute or a property.
 				// It must be the last name.
-				if ($relIndex === count($relNames)) {
+				if ($relIndex === $countRelNames) {
 					// Check if it is an attribute.
 					$attributeNames = $relStaticClass->attributeNames();
 					$isAttribute = in_array($relName, $attributeNames);
 					// If it is an attribute and the attribute is a FK and $useRelationLabel is true, return the related AR label.
 					if ($isAttribute && $useRelationLabel && (($relData = self::findRelation($relStaticClass, $relName)) !== null)) {
-						return self::model($relData[3])->label(1); // This will always be a BELONGS_TO.
+						// This will always be a BELONGS_TO, then singular.
+						return self::model($relData[3])->label(1);
 					} else {
-						// Or try to return the label from the defined labels.
-						// If there's no label for this attribute, generate one.
-						$labels = $relStaticClass->attributeLabels();
-						if (isset($labels[$relName]))
-							return $labels[$relName];
-						else
-							return $relStaticClass->generateAttributeLabel($relName);
+						// There's no label for this attribute or property, generate one.
+						return $relStaticClass->generateAttributeLabel($relName);
 					}
 				} else {
 					// It is not the last item.
-					throw new InvalidArgumentException(Yii::t('giix', 'The attribute "{attribute}" cannot have relations or attributes.', array('{attribute}' => $relName)));
+					throw new InvalidArgumentException(Yii::t('giix', 'The attribute "{attribute}" should be the last name.', array('{attribute}' => $relName)));
 				}
 			}
 

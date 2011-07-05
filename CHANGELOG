@@ -4,8 +4,8 @@ giix Change Log
 Version 1.9, to be released
 ----------------------------
 Bug: GxActiveRecord::getRelationLabel supported only relations and (table-based) attributes. Support for class properties has been added.
-Chg: The method attributeLabels in the generated base model now have the FK fields set to the related model's label by default.
-Chg: The method attributeLabels in the generated base model now have the relations of the model. They are set to the related model's label by default.
+Chg: The method attributeLabels in the generated base model now have the FK fields set to null by default.
+Chg: The method attributeLabels in the generated base model now have the relations of the model. They are set to null by default.
 Chg: The method GxActiveRecord::label doesn't have the second parameter "ucwords" anymore. The same happens when it is overriden on the generated base model.
 Chg: The method GxActiveRecord::getRelationLabel doesn't have the third parameter "ucwords" anymore.
 

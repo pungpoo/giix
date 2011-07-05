@@ -126,23 +126,26 @@ class GiixModelCode extends ModelCode {
 
 	/**
 	 * Generates the labels for the table fields and relations.
-	 * By default, the labels for the FK fields and for the relations come from the related model's label.
+	 * By default, the labels for the FK fields and for the relations is null. This
+	 * will cause them to be represented by the related model label.
 	 * #MethodTracker
 	 * This method is based on {@link ModelCode::generateLabels}, from version 1.1.7 (r3135). Changes:
 	 * <ul>
-	 * <li>Default label for FKs come from the related model's label.</li>
-	 * <li>Creates entries for the relations. The default label comes from the related model's label.</li>
+	 * <li>Default label for FKs is null.</li>
+	 * <li>Creates entries for the relations. The default label is null.</li>
 	 * </ul>
 	 * @param CDbTableSchema $table The table definition.
 	 * @param string $className The model class name.
 	 * @return array The labels.
+	 * @see GxActiveRecord::label
+	 * @see GxActiveRecord::getRelationLabel
 	 */
 	public function generateLabelsEx($table, $className) {
 		$labels = array();
 		// For the fields.
 		foreach ($table->columns as $column) {
 			if ($column->isForeignKey) {
-				$label = $this->findRelatedClass($className, $column) . '::label()';
+				$label = null;
 			} else {
 				$label = ucwords(trim(strtolower(str_replace(array('-', '_'), ' ', preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $column->name)))));
 				$label = preg_replace('/\s+/', ' ', $label);
@@ -159,11 +162,8 @@ class GiixModelCode extends ModelCode {
 		// For the relations.
 		$relations = $this->getRelationsData($className);
 		if (isset($relations)) {
-			foreach ($relations as $relationName => $relationData) {
-				if (($relationData[0] === GxActiveRecord::HAS_MANY) || ($relationData[0] === GxActiveRecord::MANY_MANY))
-					$labels[$relationName] = $relationData[1] . '::label(2)';
-				else
-					$labels[$relationName] = $relationData[1] . '::label()';
+			foreach (array_keys($relations) as $relationName) {
+				$labels[$relationName] = null;
 			}
 		}
 
@@ -307,7 +307,7 @@ class GiixModelCode extends ModelCode {
 			else
 				$relations = $this->generateRelations();
 		}
-		
+
 		if (isset($relations[$className]) && isset($relations[$className][$relationName]))
 			$relation = $relations[$className][$relationName];
 		else

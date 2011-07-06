@@ -31,30 +31,25 @@
  * @property <?php echo $column->type.' $'.$column->name."\n"; ?>
 <?php endforeach; ?>
  *
-<?php foreach($relations as $name=>$relation): ?>
+<?php foreach(array_keys($relations) as $name): ?>
  * @property <?php
-	if (preg_match("~^array\(self::([^,]+), '([^']+)', '([^']+)'\)$~", $relation, $matches))
-	{
-		$relationType = $matches[1];
-		$relationModel = $matches[2];
+	$relationData = $this->getRelationData($modelClass, $name);
+	$relationType = $relationData[0];
+	$relationModel = $relationData[1];
 
-		switch($relationType){
-			case 'HAS_ONE':
-				echo $relationModel.' $'.$name."\n";
-				break;
-			case 'BELONGS_TO':
-				echo $relationModel.' $'.$name."\n";
-				break;
-			case 'HAS_MANY':
-				echo $relationModel.'[] $'.$name."\n";
-				break;
-			case 'MANY_MANY':
-				echo $relationModel.'[] $'.$name."\n";
-				break;
-			default:
-				echo 'mixed $'.$name."\n";
-		}
+	switch($relationType) {
+		case GxActiveRecord::BELONGS_TO:
+		case GxActiveRecord::HAS_ONE:
+			echo $relationModel;
+			break;
+		case GxActiveRecord::HAS_MANY:
+		case GxActiveRecord::MANY_MANY:
+			echo $relationModel . '[]';
+			break;
+		default:
+			echo 'mixed';
 	}
+	echo ' $' . $name . "\n";
 	?>
 <?php endforeach; ?>
  */

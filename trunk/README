@@ -59,12 +59,12 @@ REQUIREMENTS
 
 Yii 1.1.7+ is required.
 
-giix is tested under:
-- Yii trunk code, revision 3291
+giix should run with:
+- Yii 1.1.7+ (tested with revision 3340)
 - Linux
-- Apache 2.2
-- MySQL 5.0
-- PHP 5.2
+- Apache 2.2 or nginx 0.8+
+- MySQL 5.x
+- PHP 5.2+
 
 giix may run on other setups, but there is no official suppport for them.
 There is no planned official support for other setups, including Windows/IIS, XAMPP/etc or other DBMS.

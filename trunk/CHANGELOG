@@ -1,7 +1,7 @@
 giix Change Log
 ===============
 
-Version 1.9, to be released
+Version 1.9, 2011-07-06
 ----------------------------
 Bug: GxActiveRecord::getRelationLabel supported only relations and (table-based) attributes. Support for class properties has been added.
 Chg: The method attributeLabels in the generated base model now have the FK fields set to null by default.

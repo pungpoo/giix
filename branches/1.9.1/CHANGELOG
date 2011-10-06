@@ -1,6 +1,11 @@
 giix Change Log
 ===============
 
+
+Version 1.9.1, 2011-10-06
+----------------------------
+Applying r167. Bug: Removed undefined variables from GxActiveRecord::saveRelated.
+
 Version 1.9, 2011-07-06
 ----------------------------
 Bug: GxActiveRecord::getRelationLabel supported only relations and (table-based) attributes. Support for class properties has been added.

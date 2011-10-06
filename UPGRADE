@@ -13,18 +13,10 @@ General upgrade intructions
 - Make a backup.
 - Clean up your assets directory.
 - Clean up your cache directory.
-- Remove the "giix" diretory from your application's extensions directory.
+- Remove the "giix-core" and "giix-components" diretories from your application's
+  extensions directory.
 - Check the requirements of the new version in the README file.
-- Then follow the install instructions for the new release in the INSTALL file.
-
-Upgrading from 1.9
----------------------
-giix's directory layout has changed. Please review the installation instructions in INSTALL and change your configurations accordingly.
-
-The message translation was removed from the generated view files. The translation of the view files should be done via file translation.
-See <http://www.yiiframework.com/doc/guide/1.1/en/topics.i18n#file-translation> for more information.
-
-GxActiveRecord::pkSeparator isn't declared as static anymore. You should check your code and make any necessary changes accordingly.
+- Then follow the install instructions for the new release.
 
 Upgrading from 1.8
 ---------------------

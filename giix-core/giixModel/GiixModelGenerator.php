@@ -13,11 +13,10 @@
  * GiixModelGenerator is the controller for giix model generator.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @package giix.generators.giixModel
  */
 class GiixModelGenerator extends CCodeGenerator {
 
-	public $codeModel = 'ext.giix.generators.giixModel.GiixModelCode';
+	public $codeModel = 'ext.giix-core.giixModel.GiixModelCode';
 
 	/**
 	 * Returns the table names in an array.

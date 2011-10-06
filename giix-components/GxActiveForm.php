@@ -13,7 +13,6 @@
  * GxActiveForm provides forms with additional features.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @package giix.components
  */
 class GxActiveForm extends CActiveForm {
 

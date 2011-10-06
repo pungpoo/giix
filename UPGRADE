@@ -18,6 +18,10 @@ General upgrade intructions
 - Check the requirements of the new version in the README file.
 - Then follow the install instructions for the new release.
 
+Upgrading from 1.9
+---------------------
+No modification required.
+
 Upgrading from 1.8
 ---------------------
 The method GxActiveRecord::label doesn't have the second parameter "ucwords" anymore. The same happens when it is overriden on the generated base model.

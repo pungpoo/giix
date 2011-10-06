@@ -13,11 +13,10 @@
  * GiixCrudGenerator is the controller for giix crud generator.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @package giix.generators.giixCrud
  */
 class GiixCrudGenerator extends CCodeGenerator {
 
-	public $codeModel = 'ext.giix.generators.giixCrud.GiixCrudCode';
+	public $codeModel = 'ext.giix-core.giixCrud.GiixCrudCode';
 
 	/**
 	 * Returns the model names in an array.

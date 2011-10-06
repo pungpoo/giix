@@ -13,7 +13,6 @@
  * GxCoreHelper is a static class that provides a collection of helper methods for code generation.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @package giix.helpers
  */
 class GxCoreHelper {
 
@@ -56,7 +55,7 @@ class GxCoreHelper {
 				else
 					$result .= "'{$key}'";
 			else // To be future-proof.
-				throw new InvalidArgumentException(Yii::t('giix.messages', 'Array key type not supported.'));
+				throw new InvalidArgumentException(Yii::t('giix', 'Array key type not supported.'));
 
 			// The assignment.
 			$result .= ' => ';
@@ -76,9 +75,9 @@ class GxCoreHelper {
 				else
 					$result .= "'{$value}'";
 			else if (is_object($value))
-				throw new InvalidArgumentException(Yii::t('giix.messages', 'Object serialization is not supported (on key "{key}").', array('{key}' => $key)));
+				throw new InvalidArgumentException(Yii::t('giix', 'Object serialization is not supported (on key "{key}").', array('{key}' => $key)));
 			else
-				throw new InvalidArgumentException(Yii::t('giix.messages', 'Array element type not supported (on key "{key}").', array('{key}' => $key)));
+				throw new InvalidArgumentException(Yii::t('giix', 'Array element type not supported (on key "{key}").', array('{key}' => $key)));
 
 			// End of line
 			$result .= ",\n";

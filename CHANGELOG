@@ -1,16 +1,10 @@
 giix Change Log
 ===============
 
-Version 1.10, to be released
+
+Version 1.9.1, 2011-10-06
 ----------------------------
-Chg: Better directory organization. Now giix have its own root directory.
-Bug: Fixes issue 23: Removed undefined variables from GxActiveRecord::saveRelated.
-Chg: Removed the message translation from the generated view files.
-Enh: Added a message category to the Yii::t calls.
-Enh: Added the configuration file for generating message translations.
-Enh: Added instructions and details about the patch and messages directory configuration.
-Bug: GxActiveRecord::pkSeparator and GxActiveRecord::repColumnsSeparator shouldn't be static.
-Bug: Now generating the proper label for the relation in the view "_view".
+Applying r167. Bug: Removed undefined variables from GxActiveRecord::saveRelated.
 
 Version 1.9, 2011-07-06
 ----------------------------

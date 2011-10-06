@@ -13,21 +13,14 @@
  * GxActiveRecord is the base class for the generated AR (base) models.
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
- * @package giix.components
  */
 abstract class GxActiveRecord extends CActiveRecord {
 
 	/**
-	 * @var string The separator (delimiter) used to separate the primary keys values in a
-	 * string representation of the pks of a composite pk record. Usually a character.
+	 * @var string the separator used to separate the primary keys values in a
+	 * composite pk table. Usually a character.
 	 */
-	public $pkSeparator = '-';
-	/**
-	 * @var string The separator (delimiter) used to separate the {@link representingColumn}
-	 * values when there are multiple representing columns while building the
-	 * string representation of the record in {@link __toString}.
-	 */
-	public $repColumnsSeparator = '-';
+	public static $pkSeparator = '-';
 
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
@@ -35,9 +28,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 
 	/**
 	 * This method should be overridden to declare related pivot models for each MANY_MANY relationship.
-	 * The pivot model is used by {@link saveWithRelated} and by {@link saveMultiple}.
+	 * The pivot model is used by {@link saveWithRelated}.
 	 * @return array List of pivot models for each MANY_MANY relationship. Defaults to empty array.
-	 * @see saveRelated
 	 */
 	public function pivotModels() {
 		return array();
@@ -51,11 +43,11 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @param integer $n The number value. This is used to support plurals. Defaults to 1 (means singular).
 	 * Notice that this number doesn't necessarily corresponds to the number (count) of items.
 	 * @return string The label.
-	 * @throws CException If the method wasn't overriden.
+	 * @throws Exception If the method wasn't overriden.
 	 * @see getRelationLabel
 	 */
 	public static function label($n = 1) {
-		throw new CException(Yii::t('giix.messages', 'This method should be overriden by the Active Record class.'));
+		throw new Exception(Yii::t('giix', 'This method should be overriden by the Active Record class.'));
 	}
 
 	/**
@@ -80,7 +72,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Note: this will only work when there is no label defined in {@link CModel::attributeLabels} for this attribute.
 	 * @return string The label.
 	 * @throws InvalidArgumentException If an attribute name is found and is not the last item in the relationName parameter.
-	 * @uses label
+	 * @see label
 	 */
 	public function getRelationLabel($relationName, $n = null, $useRelationLabel = true) {
 		// Exploding the chained relation names.
@@ -131,7 +123,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 					}
 				} else {
 					// It is not the last item.
-					throw new InvalidArgumentException(Yii::t('giix.messages', 'The attribute "{attribute}" should be the last name.', array('{attribute}' => $relName)));
+					throw new InvalidArgumentException(Yii::t('giix', 'The attribute "{attribute}" should be the last name.', array('{attribute}' => $relName)));
 				}
 			}
 
@@ -192,31 +184,33 @@ abstract class GxActiveRecord extends CActiveRecord {
 	/**
 	 * Returns a string representation of the model instance, based on
 	 * {@link representingColumn}.
-	 * When you override this method, all model attributes used to build
+	 * If the representing column is not set, the primary key will be used.
+	 * If there is no primary key, the first field will be used.
+	 * When you overwrite this method, all model attributes used to build
 	 * the string representation of the model must be specified in
 	 * {@link representingColumn}.
 	 * @return string The string representation for the model instance.
-	 * @throws CException If {@link representingColumn} is not defined.
-	 * @uses representingColumn
-	 * @uses repColumnsSeparator
+	 * @see representingColumn
 	 */
 	public function __toString() {
 		$representingColumn = $this->representingColumn();
 
-		if (empty($representingColumn)) {
-			throw new CException(Yii::t('giix.messages', 'The representing column for the active record "{model}" is not set.', array(
-						'{model}' => get_class($this),
-					)));
-		}
+		if (($representingColumn === null) || ($representingColumn === array()))
+			if ($this->getTableSchema()->primaryKey !== null) {
+				$representingColumn = $this->getTableSchema()->primaryKey;
+			} else {
+				$columnNames = $this->getTableSchema()->getColumnNames();
+				$representingColumn = $columnNames[0];
+			}
 
 		if (is_array($representingColumn)) {
-			$repValues = array();
-			foreach ($representingColumn as $repColumn_item) {
-				$repValues[] = ((($repColumn_item_value = $this->$repColumn_item) === null) ? '' : (string) $repColumn_item_value);
+			$part = '';
+			foreach ($representingColumn as $representingColumn_item) {
+				$part .= ( $this->$representingColumn_item === null ? '' : $this->$representingColumn_item) . '-';
 			}
-			return implode($this->repColumnsSeparator, $repValues);
+			return substr($part, 0, -1);
 		} else {
-			return ((($repColumn_value = $this->$representingColumn) === null) ? '' : (string) $repColumn_value);
+			return $this->$representingColumn === null ? '' : (string) $this->$representingColumn;
 		}
 	}
 
@@ -237,11 +231,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @param mixed $condition Query condition or criteria.
 	 * @param array $params Parameters to be bound to an SQL statement.
 	 * @return array List of active records satisfying the specified condition. An empty array is returned if none is found.
-	 * @uses representingColumn
 	 */
 	public function findAllAttributes($attributes = null, $withPk = false, $condition='', $params=array()) {
-		Yii::trace(get_class($this) . '.findAllAttributes()', 'giix.components.GxActiveRecord');
-
 		$criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
 		if ($attributes === null)
 			$attributes = $this->representingColumn();
@@ -266,7 +257,6 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @return string|array The pk value as a string (for single pk tables) or
 	 * array (for composite pk tables) if one model was specified or
 	 * an array of strings or arrays if multiple models were specified.
-	 * @uses pkSeparator
 	 */
 	public static function extractPkValue($model, $forceString = false) {
 		if ($model === null)
@@ -274,7 +264,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 		if (!is_array($model)) {
 			$pk = $model->getPrimaryKey();
 			if ($forceString && is_array($pk))
-				$pk = implode($model->pkSeparator, $pk);
+				$pk = implode(self::$pkSeparator, $pk);
 			return $pk;
 		} else {
 			$pks = array();
@@ -305,7 +295,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 		// Check if the count of values and columns match.
 		$columnCount = count($columnNames);
 		if (count($pk) !== $columnCount)
-			throw new InvalidArgumentException(Yii::t('giix.messages', 'The count of values in the argument "pk" ({countPk}) does not match the count of columns in the composite PK ({countColumns}).'), array(
+			throw new InvalidArgumentException(Yii::t('giix', 'The count of values in the argument "pk" ({countPk}) does not match the count of columns in the composite PK ({countColumns}).'), array(
 				'{countPk}' => count($pk),
 				'{countColumns}' => $columnCount,
 			));
@@ -335,22 +325,19 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @param boolean $runValidation Whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database. This applies to all (including related) models.
 	 * This does not apply for related models when in batch mode. This does not apply for deletes.
-	 * Defaults to true.
 	 * @param array $attributes List of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved. This applies only to the main model.
 	 * @param array $options Additional options. Valid options are:
 	 * <ul>
-	 * <li>'withTransaction', boolean: Whether to use a transaction. Defaults to true.</li>
+	 * <li>'withTransaction', boolean: Whether to use a transaction.</li>
 	 * <li>'batch', boolean: Whether to try to do the deletes and inserts in batch.
 	 * While batches may be faster, using active record instances provides better control, validation, event support etc.
-	 * Batch is currently supported only for deletes. Defaults to true.</li>
+	 * Batch is only supported for deletes.</li>
 	 * </ul>
 	 * @return boolean Whether the saving succeeds.
 	 * @see pivotModels
 	 */
 	public function saveWithRelated($relatedData, $runValidation = true, $attributes = null, $options = array()) {
-		Yii::trace(get_class($this) . '.saveWithRelated()', 'giix.components.GxActiveRecord');
-
 		// Merge the specified options with the default options.
 		$options = array_merge(
 						// The default options.
@@ -412,9 +399,8 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * @return boolean Whether the saving succeeds.
 	 * @see saveWithRelated
 	 * @see saveMultiple
-	 * @throws CException If this record is new.
-	 * @throws CException If this active record has composite PK.
-	 * @uses pivotModels
+	 * @throws CDbException If this record is new.
+	 * @throws Exception If this active record has composite PK.
 	 */
 	protected function saveRelated($relatedData, $runValidation = true, $batch = true) {
 		if (empty($relatedData))
@@ -422,7 +408,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 
 		// This active record can't be new for the method to work correctly.
 		if ($this->getIsNewRecord())
-			throw new CException(Yii::t('giix.messages', 'Cannot save the related records to the database because the main record is new.'));
+			throw new CDbException(Yii::t('giix', 'Cannot save the related records to the database because the main record is new.'));
 
 		// Save each related data.
 		foreach ($relatedData as $relationName => $relationData) {
@@ -441,7 +427,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 			// Get the primary key value of the main model.
 			$thisPkValue = $this->getPrimaryKey();
 			if (is_array($thisPkValue))
-				throw new CException(Yii::t('giix.messages', 'Composite primary keys are not supported.'));
+				throw new Exception(Yii::t('giix', 'Composite primary keys are not supported.'));
 			// Get the current related models of this relation and map the current related primary keys.
 			$currentRelation = $pivotModelStatic->findAll(new CDbCriteria(array(
 								'select' => $relatedFkName,
@@ -556,13 +542,11 @@ abstract class GxActiveRecord extends CActiveRecord {
 	 * Defaults to false.</li>
 	 * </ul>
 	 * @return boolean Whether the saving succeeds.
-	 * @throws CException If "detectRelations" is true and the related model is not found.
+	 * @throws Exception If "detectRelations" is true and the related model is not found.
 	 * @see CActiveRecord::save
 	 * @see saveWithRelated
 	 */
 	public static function saveMultiple($models, $runValidation = true, $options = array()) {
-		Yii::trace('GxActiveRecord::saveMultiple()', 'giix.components.GxActiveRecord');
-
 		// Merge the specified options with the default options.
 		$options = array_merge(
 						// The default options.
@@ -630,7 +614,7 @@ abstract class GxActiveRecord extends CActiveRecord {
 									} else {
 										// Related model not found.
 										// We can't continue without filling up the FK!
-										throw new CException(Yii::t('giix.messages', 'Related model not found. Cannot continue without filling up the FK.'));
+										throw new Exception(Yii::t('giix', 'Related model not found. Cannot continue without filling up the FK.'));
 									}
 								}
 							}
